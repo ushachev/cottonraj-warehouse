@@ -2,11 +2,13 @@
   "name": "warehouse",
   "version": "0.0.1",
   "description": "warehouse web app",
+  "type": "module",
   "engines": {
     "node": ">=16"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "fastify start -l info server/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,12 @@
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.3"
+  },
+  "dependencies": {
+    "fastify-cli": "^2.14.0",
+    "fastify": "^3.25.3",
+    "fastify-plugin": "^3.0.0",
+    "fastify-autoload": "^3.9.0",
+    "fastify-sensible": "^3.1.2"
   }
 }
