@@ -1,0 +1,21 @@
+{
+  "name": "warehouse",
+  "version": "0.0.1",
+  "description": "warehouse web app",
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ushachev/cottonraj-warehouse.git"
+  },
+  "author": "Vitaliy Ushachev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ushachev/cottonraj-warehouse/issues"
+  },
+  "homepage": "https://github.com/ushachev/cottonraj-warehouse#readme"
+}
