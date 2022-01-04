@@ -26,10 +26,12 @@
     "eslint-plugin-import": "^2.25.3"
   },
   "dependencies": {
-    "fastify-cli": "^2.14.0",
     "fastify": "^3.25.3",
-    "fastify-plugin": "^3.0.0",
     "fastify-autoload": "^3.9.0",
-    "fastify-sensible": "^3.1.2"
+    "fastify-cli": "^2.14.0",
+    "fastify-plugin": "^3.0.0",
+    "fastify-sensible": "^3.1.2",
+    "point-of-view": "^5.0.0",
+    "pug": "^3.0.2"
   }
 }

@@ -1,3 +1,5 @@
 export default async (fastify) => {
-  fastify.get('/', async () => ({ hello: 'world' }));
+  fastify.get('*', (request, reply) => {
+    reply.view('index');
+  });
 };
