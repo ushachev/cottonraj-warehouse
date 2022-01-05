@@ -6,3 +6,6 @@ start-backend:
 
 lint:
 	npx eslint .
+
+test:
+	npm test

@@ -6,8 +6,15 @@
   "engines": {
     "node": ">=16"
   },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/helpers/"
+    ]
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest": "npe type commonjs",
+    "test": "jest",
+    "posttest": "npe type module",
     "start": "fastify start -l info server/index.js"
   },
   "repository": {
@@ -21,9 +28,15 @@
   },
   "homepage": "https://github.com/ushachev/cottonraj-warehouse#readme",
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.7",
+    "babel-plugin-transform-import-meta": "^2.1.0",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.3"
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^25.3.4",
+    "jest": "^27.4.5",
+    "npe": "^1.2.0"
   },
   "dependencies": {
     "fastify": "^3.25.3",

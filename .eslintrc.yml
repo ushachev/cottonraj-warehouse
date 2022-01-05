@@ -2,6 +2,9 @@
 
 root: true
 
+plugins:
+  - jest
+
 env:
   node: true
 
@@ -10,6 +13,8 @@ parserOptions:
 
 extends:
   - airbnb
+  - plugin:jest/recommended
+  - plugin:jest/style
 
 rules:
   no-console: 0
