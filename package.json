@@ -8,13 +8,18 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "<rootDir>/__tests__/helpers/"
-    ]
+      "<rootDir>/__tests__/helpers/",
+      "<rootDir>/__tests__/seeds/"
+    ],
+    "testTimeout": 6000,
+    "verbose": true
   },
   "scripts": {
     "pretest": "npe type commonjs",
     "test": "jest",
     "posttest": "npe type module",
+    "build-db": "NODE_ENV=production knex migrate:latest",
+    "build": "npm run build-db",
     "start": "fastify start -l info server/index.js"
   },
   "repository": {
@@ -36,15 +41,21 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^25.3.4",
     "jest": "^27.4.5",
-    "npe": "^1.2.0"
+    "npe": "^1.2.0",
+    "sqlite3": "^5.0.2"
   },
   "dependencies": {
     "fastify": "^3.25.3",
     "fastify-autoload": "^3.9.0",
     "fastify-cli": "^2.14.0",
     "fastify-jwt": "^4.1.3",
+    "fastify-objectionjs": "^1.0.0",
     "fastify-plugin": "^3.0.0",
     "fastify-sensible": "^3.1.2",
+    "knex": "^0.95.15",
+    "objection": "^3.0.1",
+    "objection-unique": "^1.2.2",
+    "pg": "^8.7.1",
     "point-of-view": "^5.0.0",
     "pug": "^3.0.2",
     "rollbar": "^2.24.0"

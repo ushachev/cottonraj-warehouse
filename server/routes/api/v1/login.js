@@ -1,12 +1,3 @@
-import encrypt from '../../../lib/secure.js';
-import testData from '../../../../__fixtures__/testData.js';
-
-const { users: [defaultUser] } = testData;
-const users = [{
-  username: defaultUser.username,
-  verifyPassword: (pwd) => encrypt(pwd) === encrypt(defaultUser.password),
-}];
-
 export default async (app) => {
   const schema = {
     body: {
@@ -19,12 +10,12 @@ export default async (app) => {
     },
   };
 
-  app.post('/login', { schema }, async (request, reply) => {
+  app.post('/login', { schema }, async (request) => {
     const { username, password } = request.body;
-    const user = users.find((u) => u.username === username);
+    const user = username && await app.objection.models.user.query().findOne({ username });
 
     if (!user?.verifyPassword(password)) {
-      reply.unauthorized();
+      return app.httpErrors.unauthorized();
     }
 
     const token = app.jwt.sign({ username });

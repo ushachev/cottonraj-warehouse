@@ -12,3 +12,9 @@ test:
 
 test-coverage:
 	npm test -- --coverage
+
+migrate:
+	npx knex migrate:latest
+
+migration:
+	npx knex migrate:make ${name}

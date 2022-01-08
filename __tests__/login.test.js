@@ -5,9 +5,20 @@ const { users: [defaultUser] } = testData;
 
 describe('login test:', () => {
   let app;
+  let knex;
 
   beforeAll(async () => {
     app = await buildApp();
+    knex = app.objection.knex;
+  });
+
+  beforeEach(async () => {
+    await knex.migrate.latest();
+    await knex.seed.run({ directory: './__tests__/seeds' });
+  });
+
+  afterEach(async () => {
+    await knex.migrate.rollback();
   });
 
   test('POST /api/v1/login with registered user returns a status code of 200', async () => {
