@@ -1,8 +1,14 @@
 install:
 	npm ci
 
+start:
+	heroku local -f Procfile.dev
+
 start-backend:
-	npx fastify start -w -l info -P server/index.js
+	npx fastify start -w --verbose-watch --ignore-watch='src' -l info -P server/index.js
+
+start-frontend:
+	npx webpack serve
 
 lint:
 	npx eslint .

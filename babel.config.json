@@ -1,6 +1,15 @@
 {
-  "plugins": [
-    "@babel/plugin-transform-modules-commonjs",
-    "babel-plugin-transform-import-meta"
-  ]
+  "env": {
+    "test": {
+      "plugins": [
+        "@babel/plugin-transform-modules-commonjs",
+        "babel-plugin-transform-import-meta"
+      ]
+    },
+    "production": {
+      "presets": [
+        "@babel/preset-env"
+      ]
+    }
+  }
 }
