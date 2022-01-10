@@ -8,7 +8,13 @@
     },
     "production": {
       "presets": [
-        "@babel/preset-env"
+        "@babel/preset-env",
+        "@babel/preset-react"
+      ]
+    },
+    "development": {
+      "presets": [
+        ["@babel/preset-react", { "development": true }]
       ]
     }
   }

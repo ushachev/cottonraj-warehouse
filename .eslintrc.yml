@@ -4,6 +4,7 @@ root: true
 
 plugins:
   - jest
+  - react
 
 env:
   node: true
@@ -12,11 +13,16 @@ env:
 
 parserOptions:
   ecmaVersion: 2020
+  parserOptions:
+    ecmaFeatures:
+      jsx: true
 
 extends:
   - airbnb
   - plugin:jest/recommended
   - plugin:jest/style
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
 
 rules:
   no-console: 0
@@ -29,3 +35,7 @@ rules:
   no-unused-vars:
     - error
     - argsIgnorePattern: ^_
+  react/prop-types: 0
+  react/function-component-definition:
+    - error
+    - namedComponents: arrow-function
