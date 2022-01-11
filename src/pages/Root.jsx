@@ -1,7 +1,13 @@
 import React from 'react';
 
-const Root = () => (
-  <h1 className="text-center">Warehouse</h1>
-);
+import useAuth from '../hooks/useAuth.js';
+
+const Root = () => {
+  const auth = useAuth();
+
+  return (
+    <button type="button" onClick={auth.logOut}>Log out</button>
+  );
+};
 
 export default Root;
