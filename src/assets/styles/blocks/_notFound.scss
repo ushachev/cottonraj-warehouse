@@ -1,0 +1,9 @@
+.title-404 {
+  --app-404-title-color: var(--bs-light);
+  font-size: calc(3rem + 20vw);
+  color: var(--bs-body-bg);
+  text-shadow: -0.0625rem 0 var(--app-404-title-color),
+                0 0.0625rem var(--app-404-title-color),
+                0.0625rem 0 var(--app-404-title-color),
+                0 -0.0625rem var(--app-404-title-color);
+}
