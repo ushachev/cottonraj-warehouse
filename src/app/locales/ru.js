@@ -5,6 +5,7 @@ export default {
       backToMain: 'на главную',
       login: 'войти',
       appName: 'Хлопковый Рай - склад',
+      author: 'ushachev, 2022',
     },
     placeholders: {
       login: 'ваш логин',
@@ -18,6 +19,16 @@ export default {
       auth: {
         invalidLoginOrPassword: 'неправильные логин или пароль',
       },
+    },
+    menu: {
+      goods: 'товары',
+      catalog: 'каталог',
+      purchase: 'закупка',
+      invoices: 'накладные',
+      upload: 'загрузить',
+      suppliers: 'поставщики',
+      list: 'список',
+      new: 'новый',
     },
   },
 };

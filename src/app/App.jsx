@@ -3,15 +3,26 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import AuthProvider from '../components/AuthProvider.jsx';
 import RequireAuth from '../components/RequireAuth.jsx';
-import Login from '../pages/Login.jsx';
-import Root from '../pages/Root.jsx';
-import NotFound from '../pages/NotFound.jsx';
+import Login from '../routes/Login.jsx';
+import Root from '../routes/Root.jsx';
+import NotFound from '../routes/NotFound.jsx';
+import Products from '../routes/Products.jsx';
+import Purchases from '../routes/Purchases.jsx';
+import UploadPurchase from '../routes/UploadPurchase.jsx';
+import Suppliers from '../routes/Suppliers.jsx';
+import NewSupplier from '../routes/NewSupplier.jsx';
 
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<RequireAuth><Root /></RequireAuth>} />
+        <Route path="/" element={<RequireAuth><Root /></RequireAuth>}>
+          <Route path="products" element={<Products />} />
+          <Route path="purchases" element={<Purchases />} />
+          <Route path="purchases/upload" element={<UploadPurchase />} />
+          <Route path="suppliers" element={<Suppliers />} />
+          <Route path="suppliers/new" element={<NewSupplier />} />
+        </Route>
         <Route path="login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
