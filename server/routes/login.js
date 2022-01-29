@@ -10,7 +10,7 @@ export default async (app) => {
     },
   };
 
-  app.post('/login', { schema }, async (request) => {
+  app.post('/api/v1/login', { name: 'login', schema }, async (request) => {
     const { username, password } = request.body;
     const user = username && await app.objection.models.user.query().findOne({ username });
 

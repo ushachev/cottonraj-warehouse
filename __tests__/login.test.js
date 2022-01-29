@@ -3,7 +3,7 @@ import testData from '../__fixtures__/testData.js';
 
 const { users: [defaultUser] } = testData;
 
-describe('login test:', () => {
+describe('login route test:', () => {
   let app;
   let knex;
 
@@ -21,28 +21,28 @@ describe('login test:', () => {
     await knex.migrate.rollback();
   });
 
-  test('POST /api/v1/login with registered user returns a status code of 200', async () => {
+  test('- login with registered user returns a status code of 200', async () => {
     const response = await app.inject({
       method: 'POST',
-      url: '/api/v1/login',
+      url: app.reverse('login'),
       payload: defaultUser,
     });
     expect(response.statusCode).toBe(200);
   });
 
-  test('POST /api/v1/login with incorrect password returns a status code of 401', async () => {
+  test('- login with incorrect password returns a status code of 401', async () => {
     const response = await app.inject({
       method: 'POST',
-      url: '/api/v1/login',
+      url: app.reverse('login'),
       payload: { ...defaultUser, password: 'qwerty' },
     });
     expect(response.statusCode).toBe(401);
   });
 
-  test('POST /api/v1/login with invalid data returns a status code of 400', async () => {
+  test('- login with invalid data returns a status code of 400', async () => {
     const response = await app.inject({
       method: 'POST',
-      url: '/api/v1/login',
+      url: app.reverse('login'),
       payload: { password: '' },
     });
     expect(response.statusCode).toBe(400);
