@@ -5,4 +5,10 @@ export default {
       password: 'password',
     },
   ],
+  suppliers: [
+    {
+      name: 'ИП Пупкин Василий',
+      shortName: 'ИП Пупкин',
+    },
+  ],
 };
