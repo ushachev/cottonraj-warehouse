@@ -13,9 +13,8 @@ env:
 
 parserOptions:
   ecmaVersion: 2020
-  parserOptions:
-    ecmaFeatures:
-      jsx: true
+  ecmaFeatures:
+    jsx: true
 
 extends:
   - airbnb
