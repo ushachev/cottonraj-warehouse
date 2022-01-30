@@ -3,6 +3,8 @@
 const host = '';
 const prefix = 'api/v1';
 
+export const baseURL = [host, prefix].join('/');
+
 export default {
-  loginPath: () => [host, prefix, 'login'].join('/'),
+  login: () => ['login'].join('/'),
 };

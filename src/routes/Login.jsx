@@ -9,7 +9,9 @@ import * as yup from 'yup';
 import axios from 'axios';
 
 import useAuth from '../hooks/useAuth.js';
-import routes from '../routes.js';
+import routes, { baseURL } from '../routes.js';
+
+const http = axios.create({ baseURL });
 
 const Login = () => {
   const [authError, setAuthError] = useState(null);
@@ -25,7 +27,7 @@ const Login = () => {
     onSubmit: async ({ username, password }) => {
       setAuthError(null);
       try {
-        const { data } = await axios.post(routes.loginPath(), { username, password });
+        const { data } = await http.post(routes.login(), { username, password });
         const from = location.state?.from?.pathname || '/';
 
         auth.logIn(data);
