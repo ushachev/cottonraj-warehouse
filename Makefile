@@ -5,7 +5,7 @@ start:
 	heroku local -f Procfile.dev
 
 start-backend:
-	npx fastify start -w --verbose-watch --ignore-watch='src' -l info -P server/index.js
+	npx fastify start -w --verbose-watch --ignore-watch='src dev.sqlite3*' -l info -P server/index.js
 
 start-frontend:
 	npx webpack serve
