@@ -10,5 +10,9 @@ export default {
       name: 'ИП Пупкин Василий',
       shortName: 'ИП Пупкин',
     },
+    {
+      name: 'OOO "Рога и копыта"',
+      shortName: 'Рога и копыта',
+    },
   ],
 };

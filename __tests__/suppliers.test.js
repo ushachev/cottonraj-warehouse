@@ -126,6 +126,21 @@ describe('data mutation requests:', () => {
     expect(suppliers).toEqual(expect.arrayContaining([expect.objectContaining(supplier)]));
   });
 
+  test('- create with non-unique data returns a status code of 422', async () => {
+    const token = await authenticateUser(app, defaultUser);
+    const { suppliers: [existingSupplier] } = testData;
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('suppliers'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: existingSupplier,
+    });
+    const { errors } = response.json();
+
+    expect(response.statusCode).toBe(422);
+    expect(errors).toEqual(expect.objectContaining({ name: expect.any(Array) }));
+  });
+
   test('- update w/o authentication returns a status code of 401', async () => {
     const response = await app.inject({
       method: 'PATCH',
@@ -175,5 +190,20 @@ describe('data mutation requests:', () => {
 
     expect(response.statusCode).toBe(204);
     expect(supplier).toEqual(expect.objectContaining(supplierData));
+  });
+
+  test('- update with non-unique data returns a status code of 422', async () => {
+    const token = await authenticateUser(app, defaultUser);
+    const { suppliers: [existingSupplier] } = testData;
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('supplier', { id: 2 }),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: existingSupplier,
+    });
+    const { errors } = response.json();
+
+    expect(response.statusCode).toBe(422);
+    expect(errors).toEqual(expect.objectContaining({ name: expect.any(Array) }));
   });
 });
