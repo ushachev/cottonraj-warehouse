@@ -11,7 +11,7 @@ const Root = () => {
   const { t } = useTranslation();
 
   return (
-    <Container fluid className="d-flex flex-column h-100 py-3">
+    <Container fluid className="d-flex flex-column h-100 py-3 text-body text-opacity-75">
       <Row className="flex-grow-1">
         <Col as="aside" xs="auto" className="ps-3 pe-2">
           <div className="h-100 p-3 bg-dark">
