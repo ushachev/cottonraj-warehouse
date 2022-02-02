@@ -20,6 +20,10 @@ const init = () => {
   setLocale({
     mixed: {
       required: { key: 'errors.validation.required' },
+      notOneOf: { key: 'errors.validation.notOneOf' },
+    },
+    string: {
+      min: ({ min }) => ({ key: 'errors.validation.min', values: { count: min } }),
     },
   });
 

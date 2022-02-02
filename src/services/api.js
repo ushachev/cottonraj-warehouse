@@ -6,6 +6,11 @@ const tags = {
   SUPPLIER: 'SUPPLIER',
 };
 
+const httpMethods = {
+  POST: 'POST',
+  PATCH: 'PATCH',
+};
+
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
@@ -22,11 +27,21 @@ export const api = createApi({
   endpoints: (builder) => ({
     getSuppliers: builder.query({
       query: routes.suppliers,
+      transformResponse: (response) => response.suppliers,
       providesTags: [tags.SUPPLIER],
+    }),
+    addSupplier: builder.mutation({
+      query: (data) => ({
+        url: routes.suppliers(),
+        method: httpMethods.POST,
+        body: data,
+      }),
+      invalidatesTags: [tags.SUPPLIER],
     }),
   }),
 });
 
 export const {
   useGetSuppliersQuery,
+  useAddSupplierMutation,
 } = api;
