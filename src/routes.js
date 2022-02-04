@@ -7,5 +7,6 @@ export const baseURL = [host, prefix].join('/');
 
 export default {
   login: () => ['login'].join('/'),
-  suppliers: () => ['suppliers'].join(''),
+  suppliers: () => ['suppliers'].join('/'),
+  supplier: (id) => ['suppliers', id].join('/'),
 };

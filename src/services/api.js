@@ -38,10 +38,19 @@ export const api = createApi({
       }),
       invalidatesTags: [tags.SUPPLIER],
     }),
+    updateSupplier: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: routes.supplier(id),
+        method: httpMethods.PATCH,
+        body,
+      }),
+      invalidatesTags: [tags.SUPPLIER],
+    }),
   }),
 });
 
 export const {
   useGetSuppliersQuery,
   useAddSupplierMutation,
+  useUpdateSupplierMutation,
 } = api;

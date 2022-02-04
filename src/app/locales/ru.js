@@ -9,6 +9,9 @@ export default {
       newSupplier: 'новый поставщик',
       create: 'создать',
       emptyList: 'список пуст',
+      supplier: 'поставщик',
+      cancel: 'отменить',
+      change: 'изменить',
     },
     placeholders: {
       login: 'ваш логин',
@@ -40,6 +43,9 @@ export default {
       suppliers: 'поставщики',
       list: 'список',
       new: 'новый',
+    },
+    tooltips: {
+      change: 'изменить',
     },
   },
 };
