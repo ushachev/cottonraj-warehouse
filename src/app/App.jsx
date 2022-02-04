@@ -10,7 +10,6 @@ import Products from '../routes/Products.jsx';
 import Purchases from '../routes/Purchases.jsx';
 import UploadPurchase from '../routes/UploadPurchase.jsx';
 import Suppliers from '../routes/Suppliers.jsx';
-import NewSupplier from '../routes/NewSupplier.jsx';
 
 const App = () => (
   <AuthProvider>
@@ -21,7 +20,6 @@ const App = () => (
           <Route path="purchases" element={<Purchases />} />
           <Route path="purchases/upload" element={<UploadPurchase />} />
           <Route path="suppliers" element={<Suppliers />} />
-          <Route path="suppliers/new" element={<NewSupplier />} />
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="*" element={<NotFound />} />

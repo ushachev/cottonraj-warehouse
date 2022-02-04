@@ -33,9 +33,6 @@ const Menu = ({ className }) => {
             <li>
               <NavLink to="suppliers">{t('menu.list')}</NavLink>
             </li>
-            <li>
-              <NavLink to="suppliers/new">{t('menu.new')}</NavLink>
-            </li>
           </ul>
         </li>
       </ul>
