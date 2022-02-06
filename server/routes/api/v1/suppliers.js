@@ -35,6 +35,7 @@ export default async (app) => {
       }
     })
     .patch('/suppliers/:id', { name: 'supplier', schema }, async (request, reply) => {
+      console.dir(request.headers);
       const supplier = await models.supplier.query().findById(request.params.id);
 
       try {
