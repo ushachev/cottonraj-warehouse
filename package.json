@@ -21,7 +21,7 @@
     "build-db": "NODE_ENV=production knex migrate:latest",
     "build-frontend": "NODE_ENV=production webpack",
     "build": "npm run build-db && npm run build-frontend",
-    "start": "fastify start -a 0.0.0.0 -p 8080 -l info server/index.js"
+    "start": "fastify start -a 0.0.0.0 -l info server/index.js"
   },
   "repository": {
     "type": "git",
