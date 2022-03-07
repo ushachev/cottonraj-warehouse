@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+import {
+  Container, Row, Col, ToastContainer, Toast,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { uniqueId } from 'lodash';
 
 import Logo from '../components/Logo.jsx';
 import Menu from '../components/Menu.jsx';
 import Header from '../components/Header.jsx';
 
 const Root = () => {
+  const [messageStack, setMessageStack] = useState([]);
   const { t } = useTranslation();
+
+  useEffect(() => () => setMessageStack([]), []);
+
+  const addMessageToStack = useCallback((message) => {
+    setMessageStack((prevStack) => [{ id: uniqueId('message_'), message }, ...prevStack]);
+  }, []);
+  const removeMessageFromStack = (id) => () => {
+    setMessageStack((prevStack) => prevStack.filter((message) => message.id !== id));
+  };
 
   return (
     <Container fluid className="d-flex flex-column h-100 py-3 text-body text-opacity-75">
@@ -22,7 +35,7 @@ const Root = () => {
         <Col className="ps-2 pe-3">
           <Header />
           <Row>
-            <Outlet />
+            <Outlet context={{ addMessageToStack }} />
           </Row>
         </Col>
       </Row>
@@ -31,6 +44,16 @@ const Root = () => {
           <span>{t('elements.author')}</span>
         </Col>
       </footer>
+      <ToastContainer className="mb-5 pe-3 pb-5" position="bottom-end">
+        {messageStack.map(({ id, message }) => (
+          <Toast key={id} bg="danger" onClose={removeMessageFromStack(id)}>
+            <Toast.Header>
+              <strong className="me-auto">{t('elements.appName')}</strong>
+            </Toast.Header>
+            <Toast.Body>{t(message)}</Toast.Body>
+          </Toast>
+        ))}
+      </ToastContainer>
     </Container>
   );
 };
