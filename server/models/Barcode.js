@@ -24,6 +24,14 @@ export default class Barcode extends unique(Model) {
     };
   }
 
+  static get modifiers() {
+    return {
+      defaultSelects(builder) {
+        builder.select('value');
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       product: {

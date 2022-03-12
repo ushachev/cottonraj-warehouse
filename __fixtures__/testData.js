@@ -32,5 +32,9 @@ export default {
       value: '1111111111111',
       productId: 2,
     },
+    {
+      value: '2222222222222',
+      productId: 2,
+    },
   ],
 };
