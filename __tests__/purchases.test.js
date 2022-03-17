@@ -34,13 +34,26 @@ afterEach(async () => {
 
 describe('data mutation requests:', () => {
   test('- create with incomplete data returns a status code of 400', async () => {
-    const response = await app.inject({
+    const response1 = await app.inject({
       method: 'POST',
       url: app.reverse('purchases'),
       headers: { Authorization: `Bearer ${token}` },
       payload: { number: casual.integer(1) },
     });
-    expect(response.statusCode).toBe(400);
+    const response2 = await app.inject({
+      method: 'POST',
+      url: app.reverse('purchases'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: {
+        number: casual.integer(1),
+        date: casual.date(),
+        supplierId: 1,
+        items: [],
+      },
+    });
+
+    expect(response1.statusCode).toBe(400);
+    expect(response2.statusCode).toBe(400);
   });
 
   test('- create with invalid data returns a status code of 422', async () => {

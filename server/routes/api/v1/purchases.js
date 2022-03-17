@@ -10,6 +10,7 @@ export default async (app) => {
         items: {
           type: 'array',
           items: { $ref: '#/$defs/item' },
+          minItems: 1,
         },
       },
       required: ['number', 'date', 'supplierId', 'items'],
