@@ -4,6 +4,8 @@ import routes, { baseURL as baseUrl } from '../routes.js';
 
 const tags = {
   SUPPLIER: 'SUPPLIER',
+  PRODUCT: 'PRODUCT',
+  PURCHASE: 'PURCHASE',
 };
 
 const httpMethods = {
@@ -46,6 +48,19 @@ export const api = createApi({
       }),
       invalidatesTags: [tags.SUPPLIER],
     }),
+    getProducts: builder.query({
+      query: routes.products,
+      transformResponse: (response) => response.products,
+      providesTags: [tags.PRODUCT],
+    }),
+    addPurchase: builder.mutation({
+      query: (data) => ({
+        url: routes.purchases(),
+        method: httpMethods.POST,
+        body: data,
+      }),
+      invalidatesTags: [tags.PRODUCT, tags.PURCHASE],
+    }),
   }),
 });
 
@@ -53,4 +68,6 @@ export const {
   useGetSuppliersQuery,
   useAddSupplierMutation,
   useUpdateSupplierMutation,
+  useGetProductsQuery,
+  useAddPurchaseMutation,
 } = api;
