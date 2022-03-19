@@ -8,7 +8,7 @@ import Root from '../routes/Root.jsx';
 import NotFound from '../routes/NotFound.jsx';
 import Products from '../routes/Products.jsx';
 import Purchases from '../routes/Purchases.jsx';
-import UploadPurchase from '../routes/UploadPurchase.jsx';
+import NewPurchase from '../routes/NewPurchase.jsx';
 import Suppliers from '../routes/Suppliers.jsx';
 
 const App = () => (
@@ -18,7 +18,7 @@ const App = () => (
         <Route path="/" element={<RequireAuth><Root /></RequireAuth>}>
           <Route path="products" element={<Products />} />
           <Route path="purchases" element={<Purchases />} />
-          <Route path="purchases/upload" element={<UploadPurchase />} />
+          <Route path="purchases/new" element={<NewPurchase />} />
           <Route path="suppliers" element={<Suppliers />} />
         </Route>
         <Route path="login" element={<Login />} />

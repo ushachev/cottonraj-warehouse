@@ -23,7 +23,7 @@ const Menu = ({ className }) => {
               <NavLink to="purchases">{t('menu.invoices')}</NavLink>
             </li>
             <li>
-              <NavLink to="purchases/upload">{t('menu.upload')}</NavLink>
+              <NavLink to="purchases/new">{t('menu.add')}</NavLink>
             </li>
           </ul>
         </li>

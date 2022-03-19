@@ -13,11 +13,18 @@ export default {
       cancel: 'отменить',
       change: 'изменить',
     },
+    labels: {
+      upload: 'загрузить',
+      number: 'номер',
+      date: 'дата',
+      supplier: 'поставщик',
+    },
     placeholders: {
       login: 'ваш логин',
       password: 'пароль',
       name: 'наименование',
       shortName: 'короткое наименование',
+      select: 'выбрать...',
     },
     errors: {
       smthWentWrong: 'что-то пошло не так',
@@ -27,6 +34,7 @@ export default {
         min_few: 'Не менее {{count}} символов',
         min_many: 'Не менее {{count}} символов',
         notOneOf: 'уже существует',
+        wrongFileFormat: 'неправильный формат файла',
       },
       auth: {
         invalidLoginOrPassword: 'неправильные логин или пароль',
@@ -39,10 +47,9 @@ export default {
       catalog: 'каталог',
       purchase: 'закупка',
       invoices: 'накладные',
-      upload: 'загрузить',
       suppliers: 'поставщики',
       list: 'список',
-      new: 'новый',
+      add: 'добавить',
     },
     tooltips: {
       change: 'изменить',
