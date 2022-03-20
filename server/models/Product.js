@@ -26,6 +26,14 @@ export default class Product extends unique(Model) {
     };
   }
 
+  static get modifiers() {
+    return {
+      nameSelects(builder) {
+        builder.select('name');
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       barcodes: {

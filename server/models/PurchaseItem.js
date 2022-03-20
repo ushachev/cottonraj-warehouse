@@ -26,6 +26,14 @@ export default class PurchaseItem extends Model {
     };
   }
 
+  static get modifiers() {
+    return {
+      defaultSelects(builder) {
+        builder.select('number', 'count', 'price');
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       purchase: {

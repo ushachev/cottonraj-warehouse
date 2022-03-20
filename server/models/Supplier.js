@@ -24,6 +24,14 @@ export default class Supplier extends unique(Model) {
     };
   }
 
+  static get modifiers() {
+    return {
+      nameSelects(builder) {
+        builder.select('name', 'shortName');
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       purchases: {

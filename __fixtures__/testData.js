@@ -37,4 +37,27 @@ export default {
       productId: 2,
     },
   ],
+  purchases: [
+    {
+      number: 'A-1',
+      date: '2022-03-20',
+      supplierId: 1,
+    },
+  ],
+  purchaseItems: [
+    {
+      purchaseId: 1,
+      number: 1,
+      productId: 1,
+      count: 2,
+      price: 10000,
+    },
+    {
+      purchaseId: 1,
+      number: 2,
+      productId: 2,
+      count: 1,
+      price: 100000,
+    },
+  ],
 };

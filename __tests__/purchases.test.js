@@ -10,7 +10,6 @@ const { users: [defaultUser], products } = testData;
 let app;
 let knex;
 let models;
-let token;
 
 beforeAll(async () => {
   app = await buildApp();
@@ -22,17 +21,78 @@ afterAll(async () => {
   await app.close();
 });
 
-beforeEach(async () => {
-  await knex.migrate.latest();
-  await knex.seed.run({ directory: './__tests__/seeds' });
-  token = await authenticateUser(app, defaultUser);
-});
+describe('data read requests:', () => {
+  beforeAll(async () => {
+    await knex.migrate.latest();
+    await knex.seed.run({ directory: './__tests__/seeds' });
+  });
 
-afterEach(async () => {
-  await knex.migrate.rollback();
+  afterAll(async () => {
+    await knex.migrate.rollback();
+  });
+
+  test('- w/o authentication returns a status code of 401', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('purchases'),
+    });
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('- with fake authentication returns a status code of 401', async () => {
+    const fakeUserToken = app.jwt.sign({ username: casual.username });
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('purchases'),
+      headers: { Authorization: `Bearer ${fakeUserToken}` },
+    });
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('- with right authentication returns a status code of 200', async () => {
+    const token = await authenticateUser(app, defaultUser);
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('purchases'),
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const { purchases } = response.json();
+    const received = purchases.map((item) => pick(item, [
+      'number', 'date', 'supplierId', 'supplier', 'items',
+    ]));
+    const expected = [
+      {
+        ...testData.purchases[0],
+        supplier: testData.suppliers[0],
+        items: testData.purchaseItems.map(({
+          number, count, price, productId,
+        }) => ({
+          number,
+          count,
+          price,
+          product: { name: testData.products[productId - 1].name },
+        })),
+      },
+    ];
+
+    expect(response.statusCode).toBe(200);
+    expect(received).toEqual(expected);
+  });
 });
 
 describe('data mutation requests:', () => {
+  let token;
+
+  beforeEach(async () => {
+    await knex.migrate.latest();
+    await knex.seed.run({ directory: './__tests__/seeds' });
+    token = await authenticateUser(app, defaultUser);
+  });
+
+  afterEach(async () => {
+    await knex.migrate.rollback();
+  });
+
   test('- create with incomplete data returns a status code of 400', async () => {
     const response1 = await app.inject({
       method: 'POST',
