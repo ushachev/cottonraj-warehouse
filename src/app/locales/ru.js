@@ -44,6 +44,7 @@ export default {
     },
     menu: {
       goods: 'товары',
+      arrivals: 'поступления',
       catalog: 'каталог',
       purchase: 'закупка',
       invoices: 'накладные',

@@ -53,6 +53,11 @@ export const api = createApi({
       transformResponse: (response) => response.products,
       providesTags: [tags.PRODUCT],
     }),
+    getPurchases: builder.query({
+      query: routes.purchases,
+      transformResponse: (response) => response.purchases,
+      providesTags: [tags.PURCHASE],
+    }),
     addPurchase: builder.mutation({
       query: (data) => ({
         url: routes.purchases(),
@@ -69,5 +74,6 @@ export const {
   useAddSupplierMutation,
   useUpdateSupplierMutation,
   useGetProductsQuery,
+  useGetPurchasesQuery,
   useAddPurchaseMutation,
 } = api;

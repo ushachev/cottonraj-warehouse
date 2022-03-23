@@ -7,6 +7,7 @@ import Login from '../routes/Login.jsx';
 import Root from '../routes/Root.jsx';
 import NotFound from '../routes/NotFound.jsx';
 import Products from '../routes/Products.jsx';
+import Arrivals from '../routes/Arrivals.jsx';
 import Purchases from '../routes/Purchases.jsx';
 import NewPurchase from '../routes/NewPurchase.jsx';
 import Suppliers from '../routes/Suppliers.jsx';
@@ -17,6 +18,7 @@ const App = () => (
       <Routes>
         <Route path="/" element={<RequireAuth><Root /></RequireAuth>}>
           <Route path="products" element={<Products />} />
+          <Route path="arrivals" element={<Arrivals />} />
           <Route path="purchases" element={<Purchases />} />
           <Route path="purchases/new" element={<NewPurchase />} />
           <Route path="suppliers" element={<Suppliers />} />

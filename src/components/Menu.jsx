@@ -14,6 +14,9 @@ const Menu = ({ className }) => {
             <li>
               <NavLink to="products">{t('menu.catalog')}</NavLink>
             </li>
+            <li>
+              <NavLink to="arrivals">{t('menu.arrivals')}</NavLink>
+            </li>
           </ul>
         </li>
         <li>
