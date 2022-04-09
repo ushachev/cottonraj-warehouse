@@ -6,7 +6,7 @@ import Supplier from './Supplier.js';
 import PurchaseItem from './PurchaseItem.js';
 
 const { Model } = objection;
-const unique = objectionUnique({ fields: ['number'] });
+const unique = objectionUnique({ fields: [['number', 'date']] });
 
 export default class Purchase extends unique(Model) {
   static get tableName() {

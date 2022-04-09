@@ -222,4 +222,56 @@ describe('data mutation requests:', () => {
     expect(response.statusCode).toBe(422);
     expect(errors).toEqual(expect.objectContaining({ name: expect.any(Array) }));
   });
+
+  test('- create with non-unique number on another date returns a status code of 201', async () => {
+    const { purchases: [testPurchase] } = testData;
+    const purchaseData = {
+      number: testPurchase.number,
+      date: casual.date(),
+      supplierId: 1,
+      items: [
+        {
+          number: 1,
+          productId: 1,
+          product: products[0],
+          count: 1,
+          price: 100,
+        },
+      ],
+    };
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('purchases'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: purchaseData,
+    });
+
+    expect(response.statusCode).toBe(201);
+  });
+
+  test('- create with non-unique number/date returns a status code of 422', async () => {
+    const { purchases: [testPurchase] } = testData;
+    const purchaseData = {
+      number: testPurchase.number,
+      date: testPurchase.date,
+      supplierId: 1,
+      items: [
+        {
+          number: 1,
+          productId: 1,
+          product: products[0],
+          count: 1,
+          price: 100,
+        },
+      ],
+    };
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('purchases'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: purchaseData,
+    });
+
+    expect(response.statusCode).toBe(422);
+  });
 });
