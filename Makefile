@@ -16,6 +16,9 @@ lint:
 test:
 	npm test
 
+test-pick:
+	npm test -- ${name}
+
 test-coverage:
 	npm test -- --coverage
 

@@ -43,12 +43,12 @@ export default async (app) => {
   };
 
   app
-    .get('/purchases', { name: 'purchases' }, async () => {
+    .get('/', { name: 'purchases' }, async () => {
       const purchases = await models.purchase.query()
         .withGraphJoined('[supplier(nameSelects), items(defaultSelects).[product(nameSelects)]]');
       return { purchases };
     })
-    .post('/purchases', { schema }, async (request, reply) => {
+    .post('/', { schema }, async (request, reply) => {
       const { items, ...purchaseData } = request.body;
 
       try {
