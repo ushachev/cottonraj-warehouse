@@ -10,5 +10,6 @@ export default {
   suppliers: () => ['suppliers'].join('/'),
   supplier: (id) => ['suppliers', id].join('/'),
   products: () => ['products'].join('/'),
-  purchases: () => ['purchases'].join(''),
+  purchases: () => ['purchases'].join('/'),
+  purchaseParser: () => ['purchases', 'parse'].join('/'),
 };

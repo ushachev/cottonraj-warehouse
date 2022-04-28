@@ -66,6 +66,16 @@ export const api = createApi({
       }),
       invalidatesTags: [tags.PRODUCT, tags.PURCHASE],
     }),
+    parsePurchase: builder.mutation({
+      query: (data) => ({
+        url: routes.purchaseParser(),
+        method: httpMethods.POST,
+        headers: {
+          'content-type': 'text/xml',
+        },
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -76,4 +86,5 @@ export const {
   useGetProductsQuery,
   useGetPurchasesQuery,
   useAddPurchaseMutation,
+  useParsePurchaseMutation,
 } = api;

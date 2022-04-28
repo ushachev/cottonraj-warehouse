@@ -12,9 +12,8 @@ import { updateData } from 'ka-table/actionCreators';
 import { isEmpty } from 'lodash';
 
 import {
-  useGetSuppliersQuery, useGetProductsQuery, useAddPurchaseMutation,
+  useGetSuppliersQuery, useAddPurchaseMutation, useParsePurchaseMutation,
 } from '../services/api.js';
-import parsePurchaseContent from '../services/purchaseParser.js';
 
 const tablePropsInit = {
   columns: [
@@ -71,18 +70,7 @@ const NewPurchases = () => {
   const {
     data: suppliers, isError: isSuppliersError, isLoading: isSuppliersLoading,
   } = useGetSuppliersQuery();
-  const { productIdsByBarcode, isProductsError, isProductsLoading } = useGetProductsQuery(null, {
-    selectFromResult: ({ data, isError, isLoading }) => ({
-      isProductsError: isError,
-      isProductsLoading: isLoading,
-      productIdsByBarcode: data?.reduce((acc, product) => {
-        product.barcodes.forEach((barcode) => {
-          acc[barcode] = product.id;
-        });
-        return acc;
-      }, {}),
-    }),
-  });
+  const [parsePurchaseContent] = useParsePurchaseMutation();
   const [createPurchase] = useAddPurchaseMutation();
   const [isNewQuery, setNewQuery] = useState(false);
   const [fileValidationError, setFileValidationError] = useState(null);
@@ -97,15 +85,14 @@ const NewPurchases = () => {
   };
 
   useEffect(() => {
-    if (isSuppliersLoading || isProductsLoading) {
+    if (isSuppliersLoading) {
       setNewQuery(true);
     }
-    if ((isSuppliersError || isProductsError) && isNewQuery) {
+    if (isSuppliersError && isNewQuery) {
       addMessageToStack('errors.loading');
     }
   }, [
-    isSuppliersError, isProductsError, isSuppliersLoading, isProductsLoading, isNewQuery,
-    addMessageToStack,
+    isSuppliersError, isSuppliersLoading, isNewQuery, addMessageToStack,
   ]);
   useEffect(() => {
     loadPurchaseRef.current?.focus();
@@ -155,39 +142,34 @@ const NewPurchases = () => {
     }
 
     const reader = new FileReader();
-    reader.onload = ({ target: { result } }) => {
-      const purchase = parsePurchaseContent(result);
+    reader.onload = async ({ target: { result } }) => {
+      try {
+        const purchase = await parsePurchaseContent(result).unwrap();
 
-      if (!purchase) {
-        setFileValidationError('errors.validation.wrongFileFormat');
-        return;
-      }
-
-      const supplier = suppliers.find(({ name }) => purchase.supplier
-        .toLowerCase().includes(name.toLowerCase()));
-      formik.setValues({
-        number: purchase.number,
-        date: purchase.date,
-        supplierId: supplier?.id || '',
-      });
-      setLoadedSupplier(purchase.supplier);
-      dispatch(updateData(purchase.products.map((product) => {
-        const productId = product.barcodes
-          .map((bc) => productIdsByBarcode[bc])
-          .find((id) => id);
-
-        return {
+        const supplier = suppliers.find(({ name }) => purchase.supplier
+          .toLowerCase().includes(name.toLowerCase()));
+        const tableData = purchase.products.map((product) => ({
           id: product.number,
-          productId: productId || null,
           ...product,
-        };
-      })));
+        }));
+
+        formik.setValues({
+          number: purchase.number,
+          date: purchase.date,
+          supplierId: supplier?.id || '',
+        });
+        setLoadedSupplier(purchase.supplier);
+        dispatch(updateData(tableData));
+      } catch (err) {
+        console.log('parser error:', err.data);
+        setFileValidationError('errors.validation.wrongFileFormat');
+      }
     };
 
     reader.readAsText(file, 'windows-1251');
   };
 
-  return isSuppliersLoading || isProductsLoading
+  return isSuppliersLoading
     ? <div>loading...</div>
     : (
       <Col className="py-3">
