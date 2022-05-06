@@ -40,6 +40,61 @@ export default {
       productId: 2,
     },
   ],
+  categories: [
+    {
+      name: 'КПБ',
+    },
+    {
+      name: 'Экотекс',
+      parentId: 1,
+    },
+    {
+      name: 'Поэтика',
+      parentId: 2,
+    },
+    {
+      name: 'Гармоника',
+      parentId: 2,
+    },
+    {
+      name: '2сп',
+      parentId: 3,
+    },
+    {
+      name: '1,5сп',
+      parentId: 3,
+    },
+    {
+      name: '1,5сп',
+      parentId: 4,
+    },
+    {
+      name: '2сп',
+      parentId: 4,
+    },
+    {
+      name: 'Одеяла',
+    },
+    {
+      name: 'шерсть',
+      parentId: 9,
+    },
+    {
+      name: 'Караван',
+      parentId: 10,
+    },
+    {
+      name: 'Арго',
+      parentId: 10,
+    },
+    {
+      name: 'Золотое руно',
+      parentId: 10,
+    },
+    {
+      name: 'Матрасы',
+    },
+  ],
   purchases: [
     {
       number: 'A-1',

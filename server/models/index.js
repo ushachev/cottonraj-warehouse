@@ -4,6 +4,7 @@ import Product from './Product.js';
 import Barcode from './Barcode.js';
 import Purchase from './Purchase.js';
 import PurchaseItem from './PurchaseItem.js';
+import Category from './Category.js';
 
 export default [
   User,
@@ -12,4 +13,5 @@ export default [
   Barcode,
   Purchase,
   PurchaseItem,
+  Category,
 ];
