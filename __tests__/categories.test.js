@@ -8,46 +8,46 @@ const { users: [defaultUser] } = testData;
 
 const expectedCategories = [
   {
-    id: 1, name: 'КПБ', parentId: null, children: [2],
-  },
-  {
-    id: 2, name: 'Экотекс', parentId: 1, children: [3, 4],
-  },
-  {
-    id: 3, name: 'Поэтика', parentId: 2, children: [5, 6],
-  },
-  {
-    id: 4, name: 'Гармоника', parentId: 2, children: [7, 8],
-  },
-  {
-    id: 5, name: '2сп', parentId: 3, children: [],
-  },
-  {
     id: 6, name: '1,5сп', parentId: 3, children: [],
   },
   {
     id: 7, name: '1,5сп', parentId: 4, children: [],
   },
   {
+    id: 5, name: '2сп', parentId: 3, children: [],
+  },
+  {
     id: 8, name: '2сп', parentId: 4, children: [],
-  },
-  {
-    id: 9, name: 'Одеяла', parentId: null, children: [10],
-  },
-  {
-    id: 10, name: 'шерсть', parentId: 9, children: [11, 12, 13],
-  },
-  {
-    id: 11, name: 'Караван', parentId: 10, children: [],
   },
   {
     id: 12, name: 'Арго', parentId: 10, children: [],
   },
   {
+    id: 4, name: 'Гармоника', parentId: 2, children: [7, 8],
+  },
+  {
     id: 13, name: 'Золотое руно', parentId: 10, children: [],
   },
   {
+    id: 1, name: 'КПБ', parentId: null, children: [2],
+  },
+  {
+    id: 11, name: 'Караван', parentId: 10, children: [],
+  },
+  {
     id: 14, name: 'Матрасы', parentId: null, children: [],
+  },
+  {
+    id: 9, name: 'Одеяла', parentId: null, children: [10],
+  },
+  {
+    id: 3, name: 'Поэтика', parentId: 2, children: [6, 5],
+  },
+  {
+    id: 2, name: 'Экотекс', parentId: 1, children: [4, 3],
+  },
+  {
+    id: 10, name: 'шерсть', parentId: 9, children: [12, 13, 11],
   },
 ];
 

@@ -29,6 +29,9 @@ export default class Category extends unique(Model) {
       idSelects(builder) {
         builder.select('id');
       },
+      orderByName: (builder) => {
+        builder.orderBy('name');
+      },
     };
   }
 

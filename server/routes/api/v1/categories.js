@@ -4,8 +4,8 @@ export default async (app) => {
   app
     .get('/categories', { name: 'categories' }, async () => {
       const categories = await models.category.query()
-        .modify('defaultSelects')
-        .withGraphFetched('children(idSelects)');
+        .modify(['defaultSelects', 'orderByName'])
+        .withGraphFetched('children(idSelects, orderByName)');
 
       return {
         categories: categories.map(({ children, ...categoryData }) => ({
