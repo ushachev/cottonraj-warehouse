@@ -6,6 +6,7 @@ const tags = {
   SUPPLIER: 'SUPPLIER',
   PRODUCT: 'PRODUCT',
   PURCHASE: 'PURCHASE',
+  CATEGORY: 'CATEGORY',
 };
 
 const httpMethods = {
@@ -76,6 +77,11 @@ export const api = createApi({
         body: data,
       }),
     }),
+    getCategories: builder.query({
+      query: routes.categories,
+      transformResponse: (response) => response.categories,
+      providesTags: [tags.CATEGORY],
+    }),
   }),
 });
 
@@ -87,4 +93,5 @@ export const {
   useGetPurchasesQuery,
   useAddPurchaseMutation,
   useParsePurchaseMutation,
+  useGetCategoriesQuery,
 } = api;

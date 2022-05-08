@@ -12,6 +12,8 @@ export default {
       supplier: 'поставщик',
       cancel: 'отменить',
       change: 'изменить',
+      categories: 'категории',
+      close: 'закрыть',
     },
     labels: {
       upload: 'загрузить',

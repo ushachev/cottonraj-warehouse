@@ -12,4 +12,5 @@ export default {
   products: () => ['products'].join('/'),
   purchases: () => ['purchases'].join('/'),
   purchaseParser: () => ['purchases', 'parse'].join('/'),
+  categories: () => ['categories'].join('/'),
 };
