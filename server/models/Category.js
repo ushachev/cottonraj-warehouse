@@ -16,7 +16,7 @@ export default class Category extends unique(Model) {
       properties: {
         id: { type: 'integer' },
         name: { type: 'string', minLength: 3 },
-        parentId: { type: 'integer', minimum: 1 },
+        parentId: { type: ['integer', 'null'], minimum: 1 },
       },
     };
   }

@@ -53,10 +53,12 @@ const expectedCategories = [
 
 let app;
 let knex;
+let models;
 
 beforeAll(async () => {
   app = await buildApp();
   knex = app.objection.knex;
+  models = app.objection.models;
 });
 
 afterAll(async () => {
@@ -104,5 +106,96 @@ describe('data read requests:', () => {
 
     expect(response.statusCode).toBe(200);
     expect(categories).toEqual(expectedCategories);
+  });
+});
+
+describe('data mutation requests:', () => {
+  let token;
+
+  beforeEach(async () => {
+    await knex.migrate.latest();
+    await knex.seed.run({ directory: './__tests__/seeds' });
+    token = await authenticateUser(app, defaultUser);
+  });
+
+  afterEach(async () => {
+    await knex.migrate.rollback();
+  });
+
+  test('- create w/o authentication returns a status code of 401', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('categories'),
+      payload: { name: casual.title },
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('- create with incomplete data returns a status code of 400', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('categories'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { parentId: 1 },
+    });
+    expect(response.statusCode).toBe(400);
+  });
+
+  test('- create with invalid data returns a status code of 422', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('categories'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { name: 'qq', parentId: 1 },
+    });
+    const { errors } = response.json();
+
+    expect(response.statusCode).toBe(422);
+    expect(errors).toEqual(expect.objectContaining({ name: expect.any(Array) }));
+  });
+
+  test('- create with valid data returns a status code of 201', async () => {
+    const categoryData = { name: casual.title };
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('categories'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: categoryData,
+    });
+    const { category } = response.json();
+    const categories = await models.category.query();
+
+    expect(response.statusCode).toBe(201);
+    expect(category).toEqual(expect.objectContaining(categoryData));
+    expect(categories).toEqual(expect.arrayContaining([expect.objectContaining(category)]));
+  });
+
+  test('- create with non-unique data returns a status code of 422', async () => {
+    const { categories: [existingCategory] } = testData;
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('categories'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: existingCategory,
+    });
+    const { errors } = response.json();
+
+    expect(response.statusCode).toBe(422);
+    expect(errors).toEqual(expect.objectContaining({
+      name: expect.any(Array),
+      parentId: expect.any(Array),
+    }));
+  });
+
+  test('- create with existing name in another category returns a status code of 201', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('categories'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { name: '1,5сп', parentId: 12 },
+    });
+
+    expect(response.statusCode).toBe(201);
   });
 });
