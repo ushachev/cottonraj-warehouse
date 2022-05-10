@@ -82,6 +82,14 @@ export const api = createApi({
       transformResponse: (response) => response.categories,
       providesTags: [tags.CATEGORY],
     }),
+    addCategory: builder.mutation({
+      query: (data) => ({
+        url: routes.categories(),
+        method: httpMethods.POST,
+        body: data,
+      }),
+      invalidatesTags: [tags.CATEGORY],
+    }),
   }),
 });
 
@@ -94,4 +102,5 @@ export const {
   useAddPurchaseMutation,
   useParsePurchaseMutation,
   useGetCategoriesQuery,
+  useAddCategoryMutation,
 } = api;

@@ -14,12 +14,15 @@ export default {
       change: 'изменить',
       categories: 'категории',
       close: 'закрыть',
+      add: 'добавить',
+      delete: 'удалить',
     },
     labels: {
       upload: 'загрузить',
       number: 'номер',
       date: 'дата',
       supplier: 'поставщик',
+      name: 'наименование',
     },
     placeholders: {
       login: 'ваш логин',
@@ -27,6 +30,7 @@ export default {
       name: 'наименование',
       shortName: 'короткое наименование',
       select: 'выбрать...',
+      newCategory: 'новая категория',
     },
     errors: {
       smthWentWrong: 'что-то пошло не так',
