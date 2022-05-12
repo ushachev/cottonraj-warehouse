@@ -11,7 +11,7 @@
       "<rootDir>/__tests__/helpers/",
       "<rootDir>/__tests__/seeds/"
     ],
-    "testTimeout": 10000,
+    "testTimeout": 15000,
     "verbose": true
   },
   "scripts": {

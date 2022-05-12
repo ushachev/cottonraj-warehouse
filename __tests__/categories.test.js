@@ -198,4 +198,76 @@ describe('data mutation requests:', () => {
 
     expect(response.statusCode).toBe(201);
   });
+
+  test('- update w/o authentication returns a status code of 401', async () => {
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('category', { id: 1 }),
+      payload: { name: casual.title },
+    });
+
+    expect(response.statusCode).toBe(401);
+  });
+
+  test('- update with invalid data returns a status code of 422', async () => {
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('category', { id: 1 }),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { name: 'qq' },
+    });
+    const { errors } = response.json();
+
+    expect(response.statusCode).toBe(422);
+    expect(errors).toEqual(expect.objectContaining({ name: expect.any(Array) }));
+  });
+
+  test('- update with valid data returns a status code of 204', async () => {
+    const categoryData = { name: casual.title };
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('category', { id: 1 }),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: categoryData,
+    });
+    const category = await models.category.query().findById(1);
+
+    expect(response.statusCode).toBe(204);
+    expect(category).toEqual(expect.objectContaining(categoryData));
+  });
+
+  test('- update with non-unique data returns a status code of 422', async () => {
+    const response1 = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('category', { id: 5 }),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { name: '1,5сп' },
+    });
+    const { errors: errors1 } = response1.json();
+
+    expect(response1.statusCode).toBe(422);
+    expect(errors1).toEqual(expect.objectContaining({ name: expect.any(Array) }));
+
+    const response2 = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('category', { id: 5 }),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { parentId: 4 },
+    });
+    const { errors: errors2 } = response2.json();
+
+    expect(response2.statusCode).toBe(422);
+    expect(errors2).toEqual(expect.objectContaining({ name: expect.any(Array) }));
+  });
+
+  test('- update with existing name in another category returns a status code of 204', async () => {
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('category', { id: 10 }),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { name: 'Экотекс' },
+    });
+
+    expect(response.statusCode).toBe(204);
+  });
 });

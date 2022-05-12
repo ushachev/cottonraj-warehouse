@@ -40,5 +40,23 @@ export default async (app) => {
 
         return { errors: error.data };
       }
+    })
+    .patch('/categories/:id', { name: 'category' }, async (request, reply) => {
+      const category = await models.category.query().findById(request.params.id);
+
+      try {
+        await category.$query().patch(request.body);
+        reply.code(204);
+
+        return null;
+      } catch (error) {
+        if (error.type !== 'ModelValidation') {
+          return error;
+        }
+
+        reply.code(422);
+
+        return { errors: error.data };
+      }
     });
 };
