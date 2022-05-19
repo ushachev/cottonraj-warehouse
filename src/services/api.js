@@ -90,6 +90,14 @@ export const api = createApi({
       }),
       invalidatesTags: [tags.CATEGORY],
     }),
+    updateCategory: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: routes.category(id),
+        method: httpMethods.PATCH,
+        body,
+      }),
+      invalidatesTags: [tags.CATEGORY],
+    }),
   }),
 });
 
@@ -103,4 +111,5 @@ export const {
   useParsePurchaseMutation,
   useGetCategoriesQuery,
   useAddCategoryMutation,
+  useUpdateCategoryMutation,
 } = api;

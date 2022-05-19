@@ -9,7 +9,9 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useGetCategoriesQuery, useAddCategoryMutation } from '../services/api.js';
+import {
+  useGetCategoriesQuery, useAddCategoryMutation, useUpdateCategoryMutation,
+} from '../services/api.js';
 
 const CategoryTree = () => {
   const { categories, isCategoriesError, isCategoriesLoading } = useGetCategoriesQuery(null, {
@@ -19,6 +21,7 @@ const CategoryTree = () => {
       categories: (data || []).reduce((acc, category) => {
         acc[category.id] = {
           index: category.id,
+          parentId: category.parentId,
           hasChildren: !isEmpty(category.children),
           children: category.children,
           name: category.name,
@@ -40,6 +43,7 @@ const CategoryTree = () => {
     }),
   });
   const [createCategory] = useAddCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
   const [isNewQuery, setNewQuery] = useState(false);
   const [focusedItem, setFocusedItem] = useState();
   const [expandedItems, setExpandedItems] = useState([]);
@@ -61,6 +65,13 @@ const CategoryTree = () => {
     isCategoriesError, isCategoriesLoading, isNewQuery, addMessageToStack,
   ]);
 
+  const getValidationSchema = (parentId) => yup.object().shape({
+    name: yup.string().trim().required()
+      .min(3)
+      .notOneOf(categories[parentId || 'root'].children
+        .map((id) => categories[id].name)),
+  });
+
   const formik = useFormik({
     initialValues: { name: '' },
     initialErrors: { name: null },
@@ -76,12 +87,7 @@ const CategoryTree = () => {
         categoryNameRef.current.select();
       }
     },
-    validationSchema: yup.object().shape({
-      name: yup.string().trim().required()
-        .min(3)
-        .notOneOf(categories[head(selectedItems) || 'root'].children
-          .map((id) => categories[id].name)),
-    }),
+    validationSchema: getValidationSchema(head(selectedItems)),
   });
 
   const handleOpenAddCategory = () => {
@@ -91,6 +97,47 @@ const CategoryTree = () => {
   const handleCloseAddCategory = () => setAddCategoryFormOpen(false);
   const handleDeleteCategory = () => {};
   const focusCategoryName = () => categoryNameRef.current.focus();
+  const canDropAt = ([item], { targetType, parentItem, targetItem = 'root' }) => {
+    const canDropByItem = item.parentId === null
+      ? targetType === 'item'
+      : targetType === 'item' || parentItem === 'root';
+    const canDropByTarget = !categories[targetItem].children
+      .find((id) => categories[id].name === item.name);
+
+    return canDropByItem && canDropByTarget;
+  };
+  const onCollapseItem = ({ index }) => setExpandedItems(
+    expandedItems.filter((expandedItemIndex) => expandedItemIndex !== index),
+  );
+  const onSelectItems = (indexes) => {
+    setAddCategoryFormOpen(false);
+    setSelectedItems(takeRight(indexes));
+  };
+  const onRenameItem = async (item, name) => {
+    if (item.name === name) return;
+    try {
+      await getValidationSchema(item.parentId).validate({ name });
+      await updateCategory({ id: item.index, name }).unwrap();
+    } catch (err) {
+      if (err.name === 'ValidationError') {
+        setAlert({
+          variant: 'danger',
+          message: t(err.message.key, err.message.values),
+        });
+        return;
+      }
+      console.log('mutation error:', err.data);
+      setAlert({ variant: 'danger', message: t('errors.mutation') });
+    }
+  };
+  const onDrop = async ([{ index }], { targetItem = null }) => {
+    try {
+      await updateCategory({ id: index, parentId: targetItem }).unwrap();
+    } catch (err) {
+      console.log('mutation error:', err.data);
+      setAlert({ variant: 'danger', message: t('errors.mutation') });
+    }
+  };
 
   if (isCategoriesLoading) {
     return <div>loading...</div>;
@@ -104,7 +151,7 @@ const CategoryTree = () => {
         dismissible
         onClose={() => setAlert(null)}
       >
-        {t(alert?.message)}
+        {alert?.message}
       </Alert>
       <Button variant="outline-light" size="sm" onClick={handleOpenAddCategory}>
         {t('elements.add')}
@@ -177,15 +224,17 @@ const CategoryTree = () => {
                   selectedItems,
                 },
               }}
+              canDragAndDrop
+              canReorderItems
+              canDropOnItemWithChildren
+              canDropOnItemWithoutChildren
+              canDropAt={canDropAt}
               onFocusItem={({ index }) => setFocusedItem(index)}
               onExpandItem={({ index }) => setExpandedItems([...expandedItems, index])}
-              onCollapseItem={({ index }) => setExpandedItems(
-                expandedItems.filter((expandedItemIndex) => expandedItemIndex !== index),
-              )}
-              onSelectItems={(indexes) => {
-                setAddCategoryFormOpen(false);
-                setSelectedItems(takeRight(indexes));
-              }}
+              onCollapseItem={onCollapseItem}
+              onSelectItems={onSelectItems}
+              onRenameItem={onRenameItem}
+              onDrop={onDrop}
             >
               <Tree treeId="categories" rootItem="root" treeLabel="Categories tree" />
             </ControlledTreeEnvironment>
