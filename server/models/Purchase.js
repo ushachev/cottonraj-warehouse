@@ -41,7 +41,7 @@ export default class Purchase extends unique(Model) {
         modelClass: PurchaseItem,
         join: {
           from: 'purchases.id',
-          to: 'purchase_items.purchaseId',
+          to: 'purchaseItems.purchaseId',
         },
       },
     };

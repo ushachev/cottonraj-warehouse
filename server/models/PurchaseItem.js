@@ -8,7 +8,7 @@ const { Model } = objection;
 
 export default class PurchaseItem extends Model {
   static get tableName() {
-    return 'purchase_items';
+    return 'purchaseItems';
   }
 
   static get jsonSchema() {
@@ -40,7 +40,7 @@ export default class PurchaseItem extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: Purchase,
         join: {
-          from: 'purchase_items.purchaseId',
+          from: 'purchaseItems.purchaseId',
           to: 'purchase.id',
         },
       },
@@ -48,7 +48,7 @@ export default class PurchaseItem extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: Product,
         join: {
-          from: 'purchase_items.productId',
+          from: 'purchaseItems.productId',
           to: 'products.id',
         },
       },
