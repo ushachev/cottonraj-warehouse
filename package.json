@@ -55,7 +55,7 @@
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.2.0",
     "sass-loader": "^12.4.0",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.0.8",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.2"
@@ -80,7 +80,7 @@
     "formik": "^2.2.9",
     "i18next": "^21.6.5",
     "ka-table": "^7.3.0",
-    "knex": "^0.95.15",
+    "knex": "^2.1.0",
     "lodash": "^4.17.21",
     "objection": "^3.0.1",
     "objection-unique": "^1.2.2",
