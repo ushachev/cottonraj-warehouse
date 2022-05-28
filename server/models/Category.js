@@ -1,5 +1,8 @@
+/* eslint-disable import/no-cycle */
+
 import objection from 'objection';
 import objectionUnique from 'objection-unique';
+import Product from './Product.js';
 
 const { Model } = objection;
 const unique = objectionUnique({ fields: [['name', 'parentId']] });
@@ -43,6 +46,14 @@ export default class Category extends unique(Model) {
         join: {
           from: 'categories.id',
           to: 'categories.parentId',
+        },
+      },
+      products: {
+        relation: Model.HasManyRelation,
+        modelClass: Product,
+        join: {
+          from: 'categories.id',
+          to: 'products.categoryId',
         },
       },
     };

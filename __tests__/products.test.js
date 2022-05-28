@@ -55,12 +55,13 @@ describe('data read requests:', () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const { products } = response.json();
-    const received = products.map((item) => pick(item, ['name', 'barcodes']));
-    const expected = testData.products.map(({ name }, idx) => ({
+    const received = products.map((item) => pick(item, ['name', 'barcodes', 'categoryId']));
+    const expected = testData.products.map(({ name, categoryId = null }, idx) => ({
       name,
       barcodes: testData.barcodes
         .filter(({ productId }) => productId === idx + 1)
         .map(({ value }) => value),
+      categoryId,
     }));
 
     expect(response.statusCode).toBe(200);

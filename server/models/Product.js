@@ -3,6 +3,7 @@
 import objection from 'objection';
 import objectionUnique from 'objection-unique';
 import Barcode from './Barcode.js';
+import Category from './Category.js';
 import PurchaseItem from './PurchaseItem.js';
 
 const { Model } = objection;
@@ -22,6 +23,7 @@ export default class Product extends unique(Model) {
         name: { type: 'string', minLength: 5 },
         shortName: { type: 'string', minLength: 5 },
         price: { type: 'integer', minimum: 1 },
+        categoryId: { type: ['integer', 'null'], minimum: 1 },
       },
     };
   }
@@ -50,6 +52,14 @@ export default class Product extends unique(Model) {
         join: {
           from: 'products.id',
           to: 'purchaseItems.productId',
+        },
+      },
+      category: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Category,
+        join: {
+          from: 'products.categoryId',
+          to: 'category.id',
         },
       },
     };

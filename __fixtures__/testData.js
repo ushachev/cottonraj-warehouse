@@ -21,6 +21,7 @@ export default {
     },
     {
       name: 'Одеяло шерсть 172х205',
+      categoryId: 10,
     },
     {
       name: 'Полотенце 70х130',

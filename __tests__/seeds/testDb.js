@@ -9,9 +9,9 @@ const {
 
 export const seed = async (knex) => {
   await knex('suppliers').truncate().insert(suppliers);
+  await knex('categories').truncate().insert(categories);
   await knex('products').truncate().insert(products);
   await knex('barcodes').truncate().insert(barcodes);
-  await knex('categories').truncate().insert(categories);
   await knex('purchases').truncate().insert(purchases);
   await knex('purchaseItems').truncate().insert(purchaseItems);
 
