@@ -55,13 +55,13 @@ let token;
 
 beforeAll(async () => {
   app = await buildApp();
-  await app.objection.knex.migrate.latest();
+  await app.objection.knex.migrate.latest({ directory: './__tests__/migrations' });
   await app.objection.knex.seed.run({ directory: './__tests__/seeds' });
   token = await authenticateUser(app, defaultUser);
 });
 
 afterAll(async () => {
-  await app.objection.knex.migrate.rollback();
+  await app.objection.knex.migrate.rollback({ directory: './__tests__/migrations' });
   await app.close();
 });
 

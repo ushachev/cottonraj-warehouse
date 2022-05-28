@@ -9,6 +9,7 @@
   "jest": {
     "modulePathIgnorePatterns": [
       "<rootDir>/__tests__/helpers/",
+      "<rootDir>/__tests__/migrations/",
       "<rootDir>/__tests__/seeds/"
     ],
     "testTimeout": 15000,

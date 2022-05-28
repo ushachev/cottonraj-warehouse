@@ -23,12 +23,12 @@ afterAll(async () => {
 
 describe('data read requests:', () => {
   beforeAll(async () => {
-    await knex.migrate.latest();
+    await knex.migrate.latest({ directory: './__tests__/migrations' });
     await knex.seed.run({ directory: './__tests__/seeds' });
   });
 
   afterAll(async () => {
-    await knex.migrate.rollback();
+    await knex.migrate.rollback({ directory: './__tests__/migrations' });
   });
 
   test('- w/o authentication returns a status code of 401', async () => {
@@ -84,13 +84,13 @@ describe('data mutation requests:', () => {
   let token;
 
   beforeEach(async () => {
-    await knex.migrate.latest();
+    await knex.migrate.latest({ directory: './__tests__/migrations' });
     await knex.seed.run({ directory: './__tests__/seeds' });
     token = await authenticateUser(app, defaultUser);
   });
 
   afterEach(async () => {
-    await knex.migrate.rollback();
+    await knex.migrate.rollback({ directory: './__tests__/migrations' });
   });
 
   test('- create with incomplete data returns a status code of 400', async () => {
