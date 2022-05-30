@@ -19,6 +19,7 @@ export default async (app) => {
   app
     .get('/products', { name: 'products' }, async () => {
       const products = await models.product.query()
+        .modify(['orderByName'])
         .withGraphJoined('barcodes(defaultSelects)');
 
       return {

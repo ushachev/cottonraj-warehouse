@@ -56,13 +56,15 @@ describe('data read requests:', () => {
     });
     const { products } = response.json();
     const received = products.map((item) => pick(item, ['name', 'barcodes', 'categoryId']));
-    const expected = testData.products.map(({ name, categoryId = null }, idx) => ({
-      name,
-      barcodes: testData.barcodes
-        .filter(({ productId }) => productId === idx + 1)
-        .map(({ value }) => value),
-      categoryId,
-    }));
+    const expected = testData.products
+      .map(({ name, categoryId = null }, idx) => ({
+        name,
+        barcodes: testData.barcodes
+          .filter(({ productId }) => productId === idx + 1)
+          .map(({ value }) => value),
+        categoryId,
+      }))
+      .sort(({ name: a }, { name: b }) => a.localeCompare(b));
 
     expect(response.statusCode).toBe(200);
     expect(received).toEqual(expected);

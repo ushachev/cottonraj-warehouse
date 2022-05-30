@@ -33,6 +33,9 @@ export default class Product extends unique(Model) {
       nameSelects(builder) {
         builder.select('name');
       },
+      orderByName: (builder) => {
+        builder.orderBy('name');
+      },
     };
   }
 
