@@ -16,6 +16,7 @@ export default {
       close: 'закрыть',
       add: 'добавить',
       delete: 'удалить',
+      editSelected: 'изменить выбранные',
     },
     labels: {
       upload: 'загрузить',
@@ -60,6 +61,7 @@ export default {
     },
     tooltips: {
       change: 'изменить',
+      deselect: 'снять выбор',
     },
   },
 };
