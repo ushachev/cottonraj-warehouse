@@ -13,6 +13,7 @@ export default {
       cancel: 'отменить',
       change: 'изменить',
       categories: 'категории',
+      purchases: 'закупочные накладные',
       close: 'закрыть',
       add: 'добавить',
       delete: 'удалить',
@@ -46,7 +47,7 @@ export default {
       auth: {
         invalidLoginOrPassword: 'неправильные логин или пароль',
       },
-      loading: 'ошибка загрузки',
+      loading: '{{resource}}: ошибка загрузки',
       mutation: 'ошибка создания/изменения',
     },
     menu: {

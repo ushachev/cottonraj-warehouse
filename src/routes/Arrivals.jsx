@@ -5,10 +5,13 @@ import { kaReducer, Table } from 'ka-table';
 import {
   DataType, SortingMode, SortDirection, FilteringMode,
 } from 'ka-table/enums';
-import { updateData } from 'ka-table/actionCreators';
-import { uniqueId, isEmpty } from 'lodash';
+import { updateData, showLoading, hideLoading } from 'ka-table/actionCreators';
+import { useMachine } from '@xstate/react';
+import { uniqueId } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import { useGetPurchasesQuery } from '../services/api.js';
+import fetchArrivalsMachine from '../services/fetchArrivalsMachine.js';
 import TextFilter from '../components/TextFilter.jsx';
 import DateFilter from '../components/DateFilter.jsx';
 
@@ -78,6 +81,9 @@ const tablePropsInit = {
   },
   sortingMode: SortingMode.Single,
   filteringMode: FilteringMode.FilterRow,
+  loading: {
+    enabled: false,
+  },
   paging: {
     enabled: true,
     pageIndex: 0,
@@ -137,10 +143,21 @@ const tableChildComponents = {
 };
 
 const Arrivals = () => {
-  const { arrivals, isArrivalsError, isArrivalsLoading } = useGetPurchasesQuery(null, {
-    selectFromResult: ({ data, isError, isLoading }) => ({
-      isArrivalsError: isError,
+  const [tableProps, changeTableProps] = useState(tablePropsInit);
+
+  const dispatch = (action) => {
+    changeTableProps((prevState) => kaReducer(prevState, action));
+  };
+
+  const {
+    arrivals, isArrivalsLoading, isArrivalSuccess, isArrivalsError,
+  } = useGetPurchasesQuery(null, {
+    selectFromResult: ({
+      data, isLoading, isSuccess, isError,
+    }) => ({
       isArrivalsLoading: isLoading,
+      isArrivalSuccess: isSuccess,
+      isArrivalsError: isError,
       arrivals: data?.flatMap(({
         number, date, supplier: { shortName }, items,
       }) => items.map((item) => ({
@@ -155,46 +172,42 @@ const Arrivals = () => {
       }))),
     }),
   });
-  const [isNewQuery, setNewQuery] = useState(false);
-  const [tableProps, changeTableProps] = useState(tablePropsInit);
   const { addMessageToStack } = useOutletContext();
-
-  const dispatch = (action) => {
-    changeTableProps((prevState) => kaReducer(prevState, action));
-  };
+  const { t } = useTranslation();
+  const [, send] = useMachine(fetchArrivalsMachine, {
+    actions: {
+      updateData: () => dispatch(updateData(arrivals)),
+      showLoading: () => dispatch(showLoading()),
+      hideLoading: () => dispatch(hideLoading()),
+      sendMessage: () => addMessageToStack(t('errors.loading', { resource: t('elements.purchases') })),
+    },
+  });
 
   useEffect(() => {
-    if (isArrivalsLoading) {
-      setNewQuery(true);
-    }
-    if (isArrivalsError && isNewQuery) {
-      addMessageToStack('errors.loading');
-    }
-    if (arrivals && isEmpty(tableProps.data)) {
-      dispatch(updateData(arrivals));
-    }
+    isArrivalsLoading && send('LOAD');
+    isArrivalSuccess && send('RESOLVE');
+    isArrivalsError && send('REJECT');
   }, [
-    arrivals, isArrivalsError, isArrivalsLoading, isNewQuery, addMessageToStack, tableProps.data,
+    isArrivalsLoading, isArrivalSuccess, isArrivalsError, send,
   ]);
 
-  return isArrivalsLoading
-    ? <div>loading...</div>
-    : (
-      <Col className="py-3">
-        <Table
-          columns={tableProps.columns}
-          groupedColumns={tableProps.groupedColumns}
-          data={tableProps.data}
-          rowKeyField={tableProps.rowKeyField}
-          format={tableProps.format}
-          sortingMode={tableProps.sortingMode}
-          filteringMode={tableProps.filteringMode}
-          childComponents={tableChildComponents}
-          paging={tableProps.paging}
-          dispatch={dispatch}
-        />
-      </Col>
-    );
+  return (
+    <Col className="py-3">
+      <Table
+        columns={tableProps.columns}
+        groupedColumns={tableProps.groupedColumns}
+        data={tableProps.data}
+        rowKeyField={tableProps.rowKeyField}
+        format={tableProps.format}
+        sortingMode={tableProps.sortingMode}
+        filteringMode={tableProps.filteringMode}
+        childComponents={tableChildComponents}
+        loading={tableProps.loading}
+        paging={tableProps.paging}
+        dispatch={dispatch}
+      />
+    </Col>
+  );
 };
 
 export default Arrivals;

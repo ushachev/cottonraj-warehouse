@@ -1,6 +1,29 @@
 @import '~ka-table/static/icons.scss';
 @import '~ka-table/static/themes/default.scss';
 
+$ka-loading-backdrop-color: #ffffff33;
+$ka-loading-background-color-base: rgb(226,225,234);
+
+@keyframes typing{
+  0%{
+    background-color: $ka-loading-background-color-base;
+    box-shadow: 20px 0px 0px 0px transparentize($ka-loading-background-color-base, 0.8),
+                40px 0px 0px 0px transparentize($ka-loading-background-color-base, 0.8);
+  }
+  25%{
+    background-color: transparentize($ka-loading-background-color-base, 0.6);
+    box-shadow: 20px 0px 0px 0px $ka-loading-background-color-base,
+                40px 0px 0px 0px transparentize($ka-loading-background-color-base, 0.8);
+  }
+  75%{
+    background-color: transparentize($ka-loading-background-color-base, 0.6);
+    box-shadow: 20px 0px 0px 0px transparentize($ka-loading-background-color-base, 0.8),
+                40px 0px 0px 0px $ka-loading-background-color-base;
+  }
+  100%{
+    box-shadow: none;
+  }
+}
 
 .ka{
   overflow: hidden;
@@ -122,4 +145,31 @@
 
 .ka-paging-page-index{
   cursor: pointer;
+}
+
+.ka-loading{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  // background-color: $ka-loading-backdrop-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ka-loading-active{
+  position: relative;
+  filter: blur(1px);
+}
+
+.ka-loading-icon{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: typing 1s linear infinite alternate;
+  position: relative;
+  left: -20px;
 }
