@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useOutletContext } from 'react-router-dom';
 import { ControlledTreeEnvironment, Tree } from 'react-complex-tree';
+import { useMachine } from '@xstate/react';
 import { isEmpty, takeRight, head } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -12,12 +13,18 @@ import * as yup from 'yup';
 import {
   useGetCategoriesQuery, useAddCategoryMutation, useUpdateCategoryMutation,
 } from '../services/api.js';
+import fetchCategoriesMachine from '../services/fetchCategoriesMachine.js';
 
-const CategoryTree = () => {
-  const { categories, isCategoriesError, isCategoriesLoading } = useGetCategoriesQuery(null, {
-    selectFromResult: ({ data, isError, isLoading }) => ({
-      isCategoriesError: isError,
+const CategoryTree = ({ onSelect, selectedItem, treeRef }) => {
+  const {
+    categories, isCategoriesLoading, isCategoriesSuccess, isCategoriesError,
+  } = useGetCategoriesQuery(null, {
+    selectFromResult: ({
+      data, isLoading, isSuccess, isError,
+    }) => ({
       isCategoriesLoading: isLoading,
+      isCategoriesSuccess: isSuccess,
+      isCategoriesError: isError,
       categories: (data || []).reduce((acc, category) => {
         acc[category.id] = {
           index: category.id,
@@ -44,25 +51,35 @@ const CategoryTree = () => {
   });
   const [createCategory] = useAddCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
-  const [isNewQuery, setNewQuery] = useState(false);
   const [focusedItem, setFocusedItem] = useState();
   const [expandedItems, setExpandedItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(selectedItem === null ? [] : [selectedItem]);
   const [addCategoryFormOpen, setAddCategoryFormOpen] = useState(false);
   const [alert, setAlert] = useState(null);
   const { addMessageToStack } = useOutletContext();
   const categoryNameRef = useRef();
   const { t } = useTranslation();
+  const [fetchingState, send] = useMachine(fetchCategoriesMachine, {
+    actions: {
+      expandParents: () => {
+        const getParentsOfItem = (item, parents = []) => {
+          if (item === null) return parents;
+          const { parentId } = categories[item];
+
+          return getParentsOfItem(parentId, parentId ? [...parents, parentId] : parents);
+        };
+        setExpandedItems(getParentsOfItem(selectedItem));
+      },
+      sendMessage: () => addMessageToStack(t('errors.loading', { resource: t('elements.categories') })),
+    },
+  });
 
   useEffect(() => {
-    if (isCategoriesLoading) {
-      setNewQuery(true);
-    }
-    if (isCategoriesError && isNewQuery) {
-      addMessageToStack('errors.loading');
-    }
+    isCategoriesLoading && send('LOAD');
+    isCategoriesSuccess && send('RESOLVE');
+    isCategoriesError && send('REJECT');
   }, [
-    isCategoriesError, isCategoriesLoading, isNewQuery, addMessageToStack,
+    isCategoriesLoading, isCategoriesSuccess, isCategoriesError, send,
   ]);
 
   const getValidationSchema = (parentId) => yup.object().shape({
@@ -110,8 +127,11 @@ const CategoryTree = () => {
     expandedItems.filter((expandedItemIndex) => expandedItemIndex !== index),
   );
   const onSelectItems = (indexes) => {
+    const lastSelected = takeRight(indexes);
+
     setAddCategoryFormOpen(false);
-    setSelectedItems(takeRight(indexes));
+    setSelectedItems(lastSelected);
+    onSelect(head(lastSelected) || null);
   };
   const onRenameItem = async (item, name) => {
     if (item.name === name) return;
@@ -139,7 +159,7 @@ const CategoryTree = () => {
     }
   };
 
-  if (isCategoriesLoading) {
+  if (fetchingState.matches('loading')) {
     return <div>loading...</div>;
   }
 
@@ -215,6 +235,7 @@ const CategoryTree = () => {
         : (
           <div className="mt-1 pt-2 border-top border-secondary">
             <ControlledTreeEnvironment
+              ref={treeRef}
               items={categories}
               getItemTitle={({ name }) => name}
               viewState={{
