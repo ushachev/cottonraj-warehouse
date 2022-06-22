@@ -14,10 +14,15 @@ export default {
       change: 'изменить',
       categories: 'категории',
       purchases: 'закупочные накладные',
+      products: 'товары',
       close: 'закрыть',
       add: 'добавить',
       delete: 'удалить',
       editSelected: 'изменить выбранные',
+      notSelected: 'не выбрано...',
+    },
+    titles: {
+      productEditing: 'редактирование товара',
     },
     labels: {
       upload: 'загрузить',
@@ -25,6 +30,7 @@ export default {
       date: 'дата',
       supplier: 'поставщик',
       name: 'наименование',
+      category: 'категория',
     },
     placeholders: {
       login: 'ваш логин',
