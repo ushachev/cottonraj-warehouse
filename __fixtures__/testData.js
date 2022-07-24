@@ -26,6 +26,9 @@ export default {
     {
       name: 'Полотенце 70х130',
     },
+    {
+      name: 'Подушка шерсть 50х70',
+    },
   ],
   barcodes: [
     {
@@ -93,7 +96,7 @@ export default {
       parentId: 10,
     },
     {
-      name: 'Матрасы',
+      name: 'Подушки',
     },
   ],
   purchases: [

@@ -35,10 +35,10 @@ const expectedCategories = [
     id: 11, name: 'Караван', parentId: 10, children: [],
   },
   {
-    id: 14, name: 'Матрасы', parentId: null, children: [],
+    id: 9, name: 'Одеяла', parentId: null, children: [10],
   },
   {
-    id: 9, name: 'Одеяла', parentId: null, children: [10],
+    id: 14, name: 'Подушки', parentId: null, children: [],
   },
   {
     id: 3, name: 'Поэтика', parentId: 2, children: [6, 5],
