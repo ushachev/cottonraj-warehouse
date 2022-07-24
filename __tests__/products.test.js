@@ -126,4 +126,31 @@ describe('data mutation requests:', () => {
     expect(response.statusCode).toBe(422);
     expect(errors).toEqual(expect.objectContaining({ name: expect.any(Array) }));
   });
+
+  test('- batch update with incomplete data returns a status code of 400', async () => {
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('products'),
+      headers: { Authorization: `Bearer ${token}` },
+      payload: { categoryId: 1 },
+    });
+
+    expect(response.statusCode).toBe(400);
+  });
+
+  test('- batch update with valid data returns a status code of 204', async () => {
+    const ids = [1, 4];
+    const batchCategoryId = 14;
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('products'),
+      headers: { Authorization: `Bearer ${token}` },
+      query: { ids },
+      payload: { categoryId: batchCategoryId },
+    });
+    const updatedProducts = await models.product.query().findByIds(ids);
+
+    expect(response.statusCode).toBe(204);
+    expect(updatedProducts.every(({ categoryId }) => categoryId === batchCategoryId)).toBe(true);
+  });
 });
