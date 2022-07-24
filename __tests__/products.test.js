@@ -86,16 +86,6 @@ describe('data mutation requests:', () => {
     await knex.migrate.rollback({ directory: './__tests__/migrations' });
   });
 
-  test('- update w/o authentication returns a status code of 401', async () => {
-    const response = await app.inject({
-      method: 'PATCH',
-      url: app.reverse('product', { id: 1 }),
-      payload: { name: casual.title },
-    });
-
-    expect(response.statusCode).toBe(401);
-  });
-
   test('- update with invalid data returns a status code of 422', async () => {
     const response = await app.inject({
       method: 'PATCH',
