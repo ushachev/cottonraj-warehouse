@@ -25,6 +25,10 @@ export const api = createApi({
 
       return headers;
     },
+    paramsSerializer: (params) => new URLSearchParams(Object.entries(params)
+      .flatMap(([paramKey, paramValue]) => (Array.isArray(paramValue)
+        ? paramValue.map((value) => [paramKey, value])
+        : [paramKey, paramValue]))),
   }),
   tagTypes: Object.values(tags),
   endpoints: (builder) => ({
@@ -58,6 +62,15 @@ export const api = createApi({
       query: ({ id, ...body }) => ({
         url: routes.product(id),
         method: httpMethods.PATCH,
+        body,
+      }),
+      invalidatesTags: [tags.PRODUCT],
+    }),
+    updateProductBatch: builder.mutation({
+      query: ({ ids, ...body }) => ({
+        url: routes.products(),
+        method: httpMethods.PATCH,
+        params: { ids },
         body,
       }),
       invalidatesTags: [tags.PRODUCT],
@@ -115,6 +128,7 @@ export const {
   useUpdateSupplierMutation,
   useGetProductsQuery,
   useUpdateProductMutation,
+  useUpdateProductBatchMutation,
   useGetPurchasesQuery,
   useAddPurchaseMutation,
   useParsePurchaseMutation,

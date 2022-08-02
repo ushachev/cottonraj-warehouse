@@ -8,7 +8,7 @@ import { uniqBy, without } from 'lodash';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useUpdateProductMutation } from '../services/api.js';
+import { useUpdateProductMutation, useUpdateProductBatchMutation } from '../services/api.js';
 import CategoryTree from './CategoryTree.jsx';
 
 const modalInfoMapping = {
@@ -16,6 +16,12 @@ const modalInfoMapping = {
     title: 'titles.productEditing',
     submit: 'elements.change',
     formFields: ['name'],
+    autoFocusMethod: 'select',
+  },
+  batchEditing: {
+    title: 'titles.batchProductsEditing',
+    submit: 'elements.change',
+    formFields: [],
     autoFocusMethod: 'select',
   },
 };
@@ -34,6 +40,7 @@ const ProductModal = ({
     ? initialCategoryId : null);
   const [alert, setAlert] = useState({ show: false, message: '' });
   const [updateProduct] = useUpdateProductMutation();
+  const [updateProductBatch] = useUpdateProductBatchMutation();
   const autoFocusRef = useRef();
   const treeRef = useRef();
   const { t } = useTranslation();
@@ -48,6 +55,10 @@ const ProductModal = ({
     singleEditing: (name) => updateProduct({
       id: selectedItemId,
       name,
+      categoryId: selectedItemCategoryId,
+    }),
+    batchEditing: () => updateProductBatch({
+      ids: selectedItems.map(({ productId }) => productId),
       categoryId: selectedItemCategoryId,
     }),
   };

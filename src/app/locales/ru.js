@@ -23,6 +23,7 @@ export default {
     },
     titles: {
       productEditing: 'редактирование товара',
+      batchProductsEditing: 'пакетное редактирование товаров',
     },
     labels: {
       upload: 'загрузить',
