@@ -62,7 +62,7 @@ export default class Product extends unique(Model) {
         modelClass: Category,
         join: {
           from: 'products.categoryId',
-          to: 'category.id',
+          to: 'categories.id',
         },
       },
     };
