@@ -184,7 +184,7 @@ describe('data mutation requests:', () => {
     expect(response.statusCode).toBe(201);
     expect(purchase)
       .toEqual(expect.objectContaining(pick(purchaseData, ['number', 'date', 'supplierId'])));
-    expect(product).toEqual(expect.objectContaining({ name: productName }));
+    expect(product).toEqual(expect.objectContaining({ name: productName, categoryId: null }));
     expect(barcodes).toEqual(expect.arrayContaining([
       expect.objectContaining({ value: barcodeValue }),
     ]));

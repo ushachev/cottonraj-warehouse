@@ -24,6 +24,7 @@ export default async (app) => {
               uniqueItems: true,
               items: { type: 'string' },
             },
+            categoryId: { type: ['integer', 'null'] },
           },
           required: ['name'],
         },
@@ -60,6 +61,7 @@ export default async (app) => {
               : {
                 name: product.name,
                 barcodes: product.barcodes?.map((bc) => ({ value: bc })),
+                category: { '#dbRef': product.categoryId || null },
               },
           }));
 
