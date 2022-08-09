@@ -89,7 +89,7 @@ const NewPurchases = () => {
       setNewQuery(true);
     }
     if (isSuppliersError && isNewQuery) {
-      addMessageToStack('errors.loading');
+      addMessageToStack(t('errors.loading', { resource: t('elements.suppliers') }));
     }
   }, [
     isSuppliersError, isSuppliersLoading, isNewQuery, addMessageToStack,

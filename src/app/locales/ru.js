@@ -10,6 +10,7 @@ export default {
       create: 'создать',
       emptyList: 'список пуст',
       supplier: 'поставщик',
+      suppliers: 'поставщики',
       cancel: 'отменить',
       change: 'изменить',
       categories: 'категории',
