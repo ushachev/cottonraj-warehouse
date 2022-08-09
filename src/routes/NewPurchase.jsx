@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
-  Form, Row, Col, FloatingLabel, Button,
+  Form, Row, Col, FloatingLabel, Button, Modal,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -76,8 +76,10 @@ const NewPurchases = () => {
   const [fileValidationError, setFileValidationError] = useState(null);
   const [loadedSupplier, setLoadedSupplier] = useState('');
   const [tableProps, changeTableProps] = useState(tablePropsInit);
+  const [showModal, setShowModal] = useState(false);
   const { addMessageToStack } = useOutletContext();
   const loadPurchaseRef = useRef();
+  const cancelResetRef = useRef();
   const { t } = useTranslation();
 
   const dispatch = (action) => {
@@ -116,13 +118,17 @@ const NewPurchases = () => {
       try {
         await createPurchase({ ...values, items }).unwrap();
         resetForm();
-        dispatch(updateData([]));
-        loadPurchaseRef.current.value = '';
         loadPurchaseRef.current.focus();
       } catch (err) {
         console.log('mutation error:', err.data);
         addMessageToStack('errors.mutation');
       }
+    },
+    onReset: () => {
+      setLoadedSupplier('');
+      dispatch(updateData([]));
+      loadPurchaseRef.current.value = '';
+      setShowModal(false);
     },
     validationSchema: yup.object().shape({
       number: yup.string().trim().required(),
@@ -168,12 +174,13 @@ const NewPurchases = () => {
 
     reader.readAsText(file, 'windows-1251');
   };
+  const handleCloseModal = () => setShowModal(false);
 
   return isSuppliersLoading
     ? <div>loading...</div>
     : (
       <Col className="py-3">
-        <Form onSubmit={formik.handleSubmit}>
+        <Form id="purchaseForm" onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group as={Row} controlId="formFile" className="mb-3">
             <Form.Label column md="auto">{t('labels.upload')}</Form.Label>
             <Col md={6} className="position-relative">
@@ -209,7 +216,7 @@ const NewPurchases = () => {
             <Col md={2}>
               <FloatingLabel controlId="date" label={t('labels.date')}>
                 <Form.Control
-                  type="text"
+                  type="date"
                   placeholder="date"
                   name="date"
                   onChange={formik.handleChange}
@@ -258,11 +265,37 @@ const NewPurchases = () => {
                 variant="outline-info"
                 disabled={!formik.isValid || formik.isSubmitting || isEmpty(tableProps.data)}
               >
-                {t('elements.create')}
+                {t('buttons.create')}
+              </Button>
+              <Button
+                type="button"
+                variant="outline-warning"
+                className="ms-2"
+                onClick={() => setShowModal(true)}
+              >
+                {t('buttons.reset')}
               </Button>
             </Col>
           </Row>
         </Form>
+        <Modal
+          size="sm"
+          show={showModal}
+          onHide={handleCloseModal}
+          onShow={() => cancelResetRef.current.focus()}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{t('titles.resetPurchase')}</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button variant="outline-light" onClick={handleCloseModal} ref={cancelResetRef}>
+              {t('buttons.cancel')}
+            </Button>
+            <Button type="reset" form="purchaseForm" variant="outline-warning" className="ms-2">
+              {t('buttons.confirm')}
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Col>
     );
 };

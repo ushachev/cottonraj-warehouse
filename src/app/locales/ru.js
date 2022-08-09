@@ -22,9 +22,16 @@ export default {
       editSelected: 'изменить выбранные',
       notSelected: 'не выбрано...',
     },
+    buttons: {
+      create: 'создать',
+      reset: 'сбросить',
+      cancel: 'отменить',
+      confirm: 'подтвердить',
+    },
     titles: {
       productEditing: 'редактирование товара',
       batchProductsEditing: 'пакетное редактирование товаров',
+      resetPurchase: 'сброс накладной',
     },
     labels: {
       upload: 'загрузить',
