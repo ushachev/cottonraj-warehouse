@@ -1,6 +1,6 @@
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import fastifyStatic from 'fastify-static';
+import fastifyStatic from '@fastify/static';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
