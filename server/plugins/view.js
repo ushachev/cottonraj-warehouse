@@ -1,7 +1,7 @@
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import fp from 'fastify-plugin';
-import pointOfView from 'point-of-view';
+import fastifyView from '@fastify/view';
 import pug from 'pug';
 import webpackConfig from '../../webpack.config.cjs';
 
@@ -12,7 +12,7 @@ export default fp(async (app) => {
   const devHost = `http://localhost:${port}`;
   const domain = app.mode === 'development' ? devHost : '';
 
-  app.register(pointOfView, {
+  app.register(fastifyView, {
     engine: { pug },
     includeViewExtension: true,
     root: join(__dirname, '..', 'views'),

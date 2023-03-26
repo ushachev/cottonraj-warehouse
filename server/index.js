@@ -1,6 +1,6 @@
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import autoLoad from 'fastify-autoload';
+import autoLoad from '@fastify/autoload';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
