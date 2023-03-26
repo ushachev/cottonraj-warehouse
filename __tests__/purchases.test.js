@@ -126,7 +126,7 @@ describe('data mutation requests:', () => {
         date: casual.date(),
         supplierId: 1,
         items: [{
-          number: 'a',
+          number: 0,
           productId: null,
           product: { name: casual.description },
           count: 0,

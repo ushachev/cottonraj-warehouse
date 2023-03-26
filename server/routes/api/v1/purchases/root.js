@@ -31,11 +31,11 @@ export default async (app) => {
         item: {
           type: 'object',
           properties: {
-            number: 'integer',
-            productId: ['integer', 'null'],
+            number: { type: 'integer' },
+            productId: { type: ['integer', 'null'] },
             product: { $ref: '#/$defs/product' },
-            count: 'integer',
-            price: 'integer',
+            count: { type: 'integer' },
+            price: { type: 'integer' },
           },
           required: ['number', 'productId', 'product', 'count', 'price'],
         },
