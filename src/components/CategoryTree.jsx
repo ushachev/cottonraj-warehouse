@@ -29,7 +29,7 @@ const CategoryTree = ({ onSelect, selectedItem, treeRef }) => {
         acc[category.id] = {
           index: category.id,
           parentId: category.parentId,
-          hasChildren: !isEmpty(category.children),
+          isFolder: !isEmpty(category.children),
           children: category.children,
           name: category.name,
         };
@@ -42,7 +42,7 @@ const CategoryTree = ({ onSelect, selectedItem, treeRef }) => {
       }, {
         root: {
           index: 'root',
-          hasChildren: true,
+          isFolder: true,
           children: [],
           name: 'Root item',
         },
@@ -181,7 +181,7 @@ const CategoryTree = ({ onSelect, selectedItem, treeRef }) => {
         size="sm"
         className="ms-2"
         onClick={handleDeleteCategory}
-        disabled={isEmpty(selectedItems) || categories[head(selectedItems)].hasChildren}
+        disabled={isEmpty(selectedItems) || categories[head(selectedItems)].isFolder}
       >
         {t('elements.delete')}
       </Button>
@@ -247,8 +247,8 @@ const CategoryTree = ({ onSelect, selectedItem, treeRef }) => {
               }}
               canDragAndDrop
               canReorderItems
-              canDropOnItemWithChildren
-              canDropOnItemWithoutChildren
+              canDropOnFolder
+              canDropOnNonFolder
               canDropAt={canDropAt}
               onFocusItem={({ index }) => setFocusedItem(index)}
               onExpandItem={({ index }) => setExpandedItems([...expandedItems, index])}
