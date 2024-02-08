@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import fp from 'fastify-plugin';
-import server from '../../server/index.js';
+import server from '../../index.js';
 
 export default () => {
   const app = fastify();

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-import testData from '../../__fixtures__/testData.js';
+import testData from '../__fixtures__/testData.js';
 import encrypt from '../lib/secure.js';
 
 const { users: [initialUser] } = testData;

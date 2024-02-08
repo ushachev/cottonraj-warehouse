@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import testData from '../../__fixtures__/testData.js';
-import encrypt from '../../server/lib/secure.js';
+import encrypt from '../../lib/secure.js';
 
 const {
   users: [initialUser], suppliers, products, barcodes, categories, purchases, purchaseItems,

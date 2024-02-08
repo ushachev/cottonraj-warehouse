@@ -13,12 +13,12 @@ describe('login route test:', () => {
   });
 
   beforeEach(async () => {
-    await knex.migrate.latest({ directory: './__tests__/migrations' });
-    await knex.seed.run({ directory: './__tests__/seeds' });
+    await knex.migrate.latest();
+    await knex.seed.run();
   });
 
   afterEach(async () => {
-    await knex.migrate.rollback({ directory: './__tests__/migrations' });
+    await knex.migrate.rollback();
   });
 
   test('- login with registered user returns a status code of 200', async () => {

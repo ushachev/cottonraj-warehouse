@@ -1,13 +1,3 @@
-import { resolve } from 'path';
-
-const migrations = {
-  directory: resolve('server', 'migrations'),
-};
-
-const seeds = {
-  directory: resolve('server', 'seeds'),
-};
-
 export default {
   development: {
     client: 'sqlite3',
@@ -20,8 +10,6 @@ export default {
       },
     },
     useNullAsDefault: true,
-    migrations,
-    seeds,
   },
   test: {
     client: 'sqlite3',
@@ -32,7 +20,12 @@ export default {
       },
     },
     useNullAsDefault: true,
-    migrations,
+    migrations: {
+      directory: './__tests__/migrations',
+    },
+    seeds: {
+      directory: './__tests__/seeds',
+    },
   },
   production: {
     client: 'pg',
@@ -40,6 +33,5 @@ export default {
       connectionString: process.env.DATABASE_URL,
     },
     useNullAsDefault: true,
-    migrations,
   },
 };

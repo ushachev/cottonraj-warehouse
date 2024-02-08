@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import fp from 'fastify-plugin';
 import fastifyView from '@fastify/view';
 import pug from 'pug';
-import webpackConfig from '../../webpack.config.cjs';
+import webpackConfig from '../webpack.config.cjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
