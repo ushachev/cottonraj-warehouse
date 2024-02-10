@@ -3,7 +3,7 @@ import fp from 'fastify-plugin';
 import server from '../../index.js';
 
 export default () => {
-  const app = fastify();
+  const app = fastify({ exposeHeadRoutes: false });
 
   app.register(fp(server));
 
