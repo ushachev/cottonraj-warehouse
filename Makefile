@@ -1,3 +1,6 @@
+bash-api:
+	docker compose run --rm api bash
+
 install:
 	npm ci
 
