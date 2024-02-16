@@ -46,7 +46,9 @@ export default async (app) => {
   app
     .get('/', { name: 'purchases' }, async () => {
       const purchases = await models.purchase.query()
+        .modify('defaultSelects')
         .withGraphJoined('[supplier(nameSelects), items(defaultSelects).[product(nameSelects)]]');
+
       return { purchases };
     })
     .post('/', { schema }, async (request, reply) => {

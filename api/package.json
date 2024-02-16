@@ -18,7 +18,7 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npe type commonjs",
-    "test": "jest",
+    "test": "jest --runInBand",
     "posttest": "npe type module",
     "build-db": "NODE_ENV=production knex migrate:latest",
     "build": "npm run build-db",
@@ -44,8 +44,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^27.6.3",
     "jest": "^29.7.0",
-    "npe": "^1.2.0",
-    "sqlite3": "^5.1.7"
+    "npe": "^1.2.0"
   },
   "dependencies": {
     "@fastify/autoload": "^5.8.0",

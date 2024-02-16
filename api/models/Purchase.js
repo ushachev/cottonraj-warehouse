@@ -26,6 +26,20 @@ export default class Purchase extends unique(Model) {
     };
   }
 
+  static get modifiers() {
+    return {
+      defaultSelects(builder) {
+        const { ref, raw } = Purchase;
+        builder.select(
+          ref('id'),
+          ref('number'),
+          raw("TO_CHAR(??::DATE, 'YYYY-MM-DD')", ref('date')).as('date'),
+          ref('supplierId'),
+        );
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       supplier: {

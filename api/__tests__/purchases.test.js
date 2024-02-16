@@ -176,7 +176,9 @@ describe('data mutation requests:', () => {
       headers: { Authorization: `Bearer ${token}` },
       payload: purchaseData,
     });
-    const purchase = await models.purchase.query().findOne({ number: purchaseData.number });
+    const purchase = await models.purchase.query()
+      .modify('defaultSelects')
+      .findOne({ number: purchaseData.number });
     const product = await models.product.query().findOne({ name: productName });
     const barcodes = await models.barcode.query();
     const purchaseItems = await models.purchaseItem.query();

@@ -1,5 +1,5 @@
 bash-api:
-	docker compose run --rm api bash
+	docker compose run --no-deps --rm api bash
 
 install:
 	npm ci
@@ -14,13 +14,13 @@ start-frontend:
 	npx webpack serve
 
 lint-api:
-	docker compose run --rm api yarn lint
+	docker compose run --no-deps --rm api yarn lint
 
-test:
-	npm test
+test-api:
+	docker compose run --rm api yarn test
 
-test-pick:
-	npm test -- ${name}
+test-api-pick:
+	docker compose run --rm api yarn test ${name}
 
 test-coverage:
 	npm test -- --coverage
