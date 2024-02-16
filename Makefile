@@ -13,8 +13,8 @@ start-backend:
 start-frontend:
 	npx webpack serve
 
-lint:
-	npx eslint . --ext js,jsx
+lint-api:
+	docker compose run --rm api yarn lint
 
 test:
 	npm test

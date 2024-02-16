@@ -4,24 +4,18 @@ root: true
 
 plugins:
   - jest
-  - react
 
 env:
   node: true
   jest: true
-  browser: true
 
 parserOptions:
   ecmaVersion: 2020
-  ecmaFeatures:
-    jsx: true
 
 extends:
-  - airbnb
+  - airbnb-base
   - plugin:jest/recommended
   - plugin:jest/style
-  - plugin:react/recommended
-  - plugin:react-hooks/recommended
 
 rules:
   no-console: 0
@@ -37,7 +31,3 @@ rules:
   no-unused-expressions:
     - error
     - allowShortCircuit: true
-  react/prop-types: 0
-  react/function-component-definition:
-    - error
-    - namedComponents: arrow-function
