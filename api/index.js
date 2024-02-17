@@ -18,3 +18,7 @@ export default async (fastify, _options) => {
     cascadeHooks: true,
   });
 };
+
+export const options = {
+  exposeHeadRoutes: false,
+};

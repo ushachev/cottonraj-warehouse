@@ -20,9 +20,10 @@
     "pretest": "npe type commonjs",
     "test": "jest --runInBand",
     "posttest": "npe type module",
+    "dev": "fastify start -o -w --verbose-watch -l info -P index.js",
     "build-db": "NODE_ENV=production knex migrate:latest",
     "build": "npm run build-db",
-    "start": "NODE_ENV=production fastify start -a 0.0.0.0 -l info index.js"
+    "start": "NODE_ENV=production fastify start -o -l info index.js"
   },
   "repository": {
     "type": "git",
