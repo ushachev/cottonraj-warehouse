@@ -13,6 +13,9 @@ install:
 lint-api:
 	docker compose run --no-deps --rm api yarn lint
 
+lint-web:
+	docker compose run --no-deps --rm web yarn lint
+
 migrate:
 	docker compose run --rm api ./node_modules/.bin/knex migrate:latest
 

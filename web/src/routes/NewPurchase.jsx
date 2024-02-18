@@ -94,7 +94,7 @@ const NewPurchases = () => {
       addMessageToStack(t('errors.loading', { resource: t('elements.suppliers') }));
     }
   }, [
-    isSuppliersError, isSuppliersLoading, isNewQuery, addMessageToStack,
+    isSuppliersError, isSuppliersLoading, isNewQuery, addMessageToStack, t,
   ]);
   useEffect(() => {
     loadPurchaseRef.current?.focus();
