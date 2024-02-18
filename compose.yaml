@@ -1,4 +1,10 @@
 services:
+  web:
+    build:
+      context: ./web
+    volumes:
+      - ./web:/app
+
   api:
     build:
       context: ./api
