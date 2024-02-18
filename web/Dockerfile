@@ -7,4 +7,4 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
-CMD [ "ls" ]
+CMD [ "yarn", "start" ]

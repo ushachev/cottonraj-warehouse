@@ -5,7 +5,7 @@ bash-api:
 	docker compose run --no-deps --rm api bash
 
 bash-web:
-	docker compose run --rm web bash
+	docker compose run --no-deps --rm web bash
 
 install:
 	npm ci

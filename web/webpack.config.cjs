@@ -1,21 +1,28 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
+const isDev = mode === 'development';
 
 module.exports = {
   mode,
   output: {
-    path: path.join(__dirname, 'dist', 'public'),
-    publicPath: '/assets/',
+    path: path.join(__dirname, 'build'),
   },
   devServer: {
     host: '0.0.0.0',
-    port: 8080,
+    port: 3000,
     historyApiFallback: true,
+    proxy: {
+      '/api': 'http://api:5000',
+    },
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'public', 'index.html'),
+    }),
     new MiniCssExtractPlugin(),
   ],
   module: {
@@ -28,7 +35,7 @@ module.exports = {
       {
         test: /\.scss$/i,
         use: [
-          MiniCssExtractPlugin.loader,
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           'sass-loader',
