@@ -15,9 +15,12 @@ module.exports = {
     host: '0.0.0.0',
     port: 3000,
     historyApiFallback: true,
-    proxy: {
-      '/api': 'http://api:5000',
-    },
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://api:5000',
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
