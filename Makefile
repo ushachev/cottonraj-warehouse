@@ -25,6 +25,9 @@ migration:
 start:
 	docker compose up --build
 
+start-prod:
+	docker compose -f compose.yaml up --build
+
 test-api:
 	docker compose --profile test --env-file .env.test run --rm api yarn test
 

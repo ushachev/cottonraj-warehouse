@@ -1,5 +1,7 @@
 services:
   web:
+    build:
+      target: development
     ports:
       - 3000:3000
 

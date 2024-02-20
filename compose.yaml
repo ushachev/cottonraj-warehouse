@@ -4,6 +4,9 @@ services:
       context: ./web
     volumes:
       - ./web:/app
+    ports:
+      - 80:80
+      - 443:443
     networks:
       - network-api
     depends_on:

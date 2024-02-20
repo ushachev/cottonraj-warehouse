@@ -9,4 +9,4 @@ COPY . .
 
 ENV FASTIFY_ADDRESS=0.0.0.0
 
-CMD [ "ls" ]
+CMD [ "yarn", "start"]
