@@ -7,9 +7,6 @@ bash-api:
 bash-web:
 	docker compose run --no-deps --rm web bash
 
-install:
-	npm ci
-
 lint-api:
 	docker compose run --no-deps --rm api yarn lint
 
@@ -31,8 +28,21 @@ start-prod:
 test-api:
 	docker compose --profile test --env-file .env.test run --rm api yarn test
 
+test-api-coverage:
+	docker compose --profile test --env-file .env.test run --rm api yarn test --coverage
+
+test-api-coverage-ci:
+	docker run --rm \
+				--volume ./api/coverage:/app/coverage \
+				--env FASTIFY_PORT=5000 \
+				--env DATABASE_HOST=postgres \
+				--env DATABASE_PORT=5432 \
+				--env DATABASE_NAME=postgres \
+				--env DATABASE_USERNAME=postgres \
+				--env DATABASE_PASSWORD=postgres \
+				--network=${network} \
+				${image} yarn test --coverage
+
 test-api-pick:
 	docker compose --profile test --env-file .env.test run --rm api yarn test ${name}
-
-test-coverage:
-	npm test -- --coverage
+	
