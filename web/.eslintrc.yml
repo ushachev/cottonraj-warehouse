@@ -1,0 +1,39 @@
+---
+
+root: true
+
+plugins:
+  - react
+
+env:
+  node: true
+  browser: true
+
+parserOptions:
+  ecmaVersion: 2020
+  ecmaFeatures:
+    jsx: true
+
+extends:
+  - airbnb
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+
+rules:
+  no-console: 0
+  import/extensions: 0
+  no-underscore-dangle: 
+    - error
+    - allow:
+      - __filename
+      - __dirname
+  no-unused-vars:
+    - error
+    - argsIgnorePattern: ^_
+  no-unused-expressions:
+    - error
+    - allowShortCircuit: true
+  react/prop-types: 0
+  react/function-component-definition:
+    - error
+    - namedComponents: arrow-function

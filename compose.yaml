@@ -1,0 +1,68 @@
+services:
+  web:
+    build:
+      context: ./web
+    volumes:
+      - ./web:/app
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - network-api
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./api
+    environment:
+      DATABASE_HOST: ${DB_SERVICE:-db-dev}
+      DATABASE_PORT: 5432
+      DATABASE_NAME: postgres
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      FASTIFY_PORT: 5000
+    volumes:
+      - ./api:/app
+    networks:
+      - network-api
+      - network-db
+    depends_on:
+      - ${DB_SERVICE:-db-dev}
+
+  db-dev:
+    image: postgres:16.1
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - network-db
+
+  db-test:
+    image: postgres:16.1
+    environment:
+      POSTGRES_PASSWORD: postgres
+    tmpfs: /var/lib/postgresql/data
+    networks:
+      - network-db
+    profiles:
+      - test
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - network-db
+    depends_on:
+      - db-dev
+    profiles:
+      - admin
+
+networks:
+  network-db:
+  network-api:
+
+volumes:
+  pg_data:
