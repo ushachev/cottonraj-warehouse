@@ -19,11 +19,17 @@ migrate:
 migration:
 	docker compose run --rm --no-deps api ./node_modules/.bin/knex migrate:make ${name}
 
+next-tag:
+	@make tag TAG=${shell bin/generate_next_tag}
+
 start:
 	docker compose up --build
 
 start-prod:
 	docker compose -f compose.yaml up --build
+
+tag:
+	git tag ${TAG} && git push --tags --no-verify
 
 test-api:
 	docker compose --profile test --env-file .env.test run --rm api yarn test
@@ -45,4 +51,3 @@ test-api-coverage-ci:
 
 test-api-pick:
 	docker compose --profile test --env-file .env.test run --rm api yarn test ${name}
-	
