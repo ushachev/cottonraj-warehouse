@@ -1,0 +1,5 @@
+:80 {
+	file_server
+
+	reverse_proxy /api/* api:5000
+}

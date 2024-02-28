@@ -1,29 +1,53 @@
-install:
-	npm ci
+admin-db:
+	docker compose up adminer
 
-start:
-	heroku local -f Procfile.dev
+bash-api:
+	docker compose run --no-deps --rm api bash
 
-start-backend:
-	npx fastify start -w --verbose-watch --ignore-watch='src dev.sqlite3*' -l info -P server/index.js
+bash-web:
+	docker compose run --no-deps --rm web bash
 
-start-frontend:
-	npx webpack serve
+lint-api:
+	docker compose run --no-deps --rm api yarn lint
 
-lint:
-	npx eslint . --ext js,jsx
-
-test:
-	npm test
-
-test-pick:
-	npm test -- ${name}
-
-test-coverage:
-	npm test -- --coverage
+lint-web:
+	docker compose run --no-deps --rm web yarn lint
 
 migrate:
-	npx knex migrate:latest
+	docker compose run --rm api ./node_modules/.bin/knex migrate:latest
 
 migration:
-	npx knex migrate:make ${name}
+	docker compose run --rm --no-deps api ./node_modules/.bin/knex migrate:make ${name}
+
+next-tag:
+	@make tag TAG=${shell bin/generate_next_tag}
+
+start:
+	docker compose up --build
+
+start-prod:
+	docker compose -f compose.yaml up --build
+
+tag:
+	git tag ${TAG} && git push --tags --no-verify
+
+test-api:
+	docker compose --profile test --env-file .env.test run --rm api yarn test
+
+test-api-coverage:
+	docker compose --profile test --env-file .env.test run --rm api yarn test --coverage
+
+test-api-coverage-ci:
+	docker run --rm \
+				--volume ./api/coverage:/app/coverage \
+				--env FASTIFY_PORT=5000 \
+				--env DATABASE_HOST=postgres \
+				--env DATABASE_PORT=5432 \
+				--env DATABASE_NAME=postgres \
+				--env DATABASE_USERNAME=postgres \
+				--env DATABASE_PASSWORD=postgres \
+				--network=${network} \
+				${image} yarn test --coverage
+
+test-api-pick:
+	docker compose --profile test --env-file .env.test run --rm api yarn test ${name}

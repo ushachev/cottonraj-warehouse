@@ -1,0 +1,62 @@
+name: Pull request CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - develop
+
+env:
+  API_TEST_TAG: cottonraj-warehouse-api:test
+  WEB_TEST_TAG: cottonraj-warehouse-web:test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16.1
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      -
+        name: Check out repository code
+        uses: actions/checkout@v4
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build API
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          load: true
+          tags: ${{ env.API_TEST_TAG }}
+      -
+        name: API linter
+        run: docker run --rm ${{ env.API_TEST_TAG }} yarn lint
+      -
+        name: Build WEB
+        uses: docker/build-push-action@v5
+        with:
+          context: ./web
+          target: development
+          load: true
+          tags: ${{ env.WEB_TEST_TAG }}
+      -
+        name: WEB linter
+        run: docker run --rm ${{ env.WEB_TEST_TAG }} yarn lint
+      -
+        name: API test and collect test coverage information
+        run: |
+          make test-api-coverage-ci image=${{ env.API_TEST_TAG }} network=${{ job.services.postgres.network }}
